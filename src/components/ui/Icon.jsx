@@ -14,6 +14,8 @@ const PATHS = {
     presentation: <><rect x="3" y="4" width="18" height="13" rx="2" /><path d="M8 21h8M12 17v4M7 9h10M9 12h6" /></>,
     menu: <><path d="M4 6h16M4 12h16M4 18h16" /></>,
     logout: <><path d="M10 17l5-5-5-5M15 12H3M21 19V5a2 2 0 0 0-2-2h-6" /></>,
+    chevronRight: <path d="m9 18 6-6-6-6" />,
+    chevronLeft: <path d="m15 18-6-6 6-6" />,
 };
 
 export default function Icon({ name, size = 18, strokeWidth = 1.8, ...props }) {

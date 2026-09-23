@@ -108,6 +108,7 @@ p {
 .app-shell {
     display: flex;
     min-height: 100vh;
+    --sidebar-current-width: var(--sidebar-width);
 }
 
 .app-main {
@@ -115,12 +116,12 @@ p {
     min-width: 0;
     display: flex;
     flex-direction: column;
-    margin-right: var(--sidebar-width);
+    margin-right: var(--sidebar-current-width);
     transition: margin-right 0.2s ease;
 }
 
-.app-shell.sidebar-compact .app-main {
-    margin-right: var(--sidebar-width-compact);
+.app-shell.sidebar-compact {
+    --sidebar-current-width: var(--sidebar-width-compact);
 }
 
 .app-content {
@@ -533,10 +534,6 @@ table.data-table tbody tr:last-child td {
 }
 
 @media (max-width: 1024px) {
-    .app-main {
-        margin-right: var(--sidebar-width-compact);
-    }
-
     .app-content {
         padding: 16px;
     }
@@ -562,6 +559,7 @@ table.data-table tbody tr:last-child td {
     z-index: 60;
     transition: width 0.2s ease, transform 0.2s ease;
     overflow: hidden;
+    contain: layout paint;
 }
 
 .sidebar-compact {
@@ -581,7 +579,8 @@ table.data-table tbody tr:last-child td {
     width: 34px;
     height: 34px;
     border-radius: 8px;
-    background: linear-gradient(180deg, #2b4d78, #1f3a5f);
+    object-fit: contain;
+    background: #fff;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -589,6 +588,7 @@ table.data-table tbody tr:last-child td {
     font-size: 13px;
     flex-shrink: 0;
     color: #fff;
+    padding: 3px;
 }
 
 .sidebar-brand-title {
@@ -607,6 +607,8 @@ table.data-table tbody tr:last-child td {
 .sidebar-nav {
     flex: 1;
     overflow-y: auto;
+    overscroll-behavior: contain;
+    scrollbar-gutter: stable;
     padding: 10px 10px;
     display: flex;
     flex-direction: column;
@@ -701,6 +703,23 @@ table.data-table tbody tr:last-child td {
     gap: 6px;
 }
 
+.sidebar-toggle {
+    border: 0;
+    background: transparent;
+    color: #8fa3c0;
+    padding: 9px 8px;
+    font: inherit;
+    font-size: 11px;
+    border-radius: var(--radius-sm);
+}
+
+.sidebar-toggle:hover,
+.sidebar-toggle:focus-visible {
+    color: #fff;
+    background: rgba(255, 255, 255, 0.08);
+    outline: none;
+}
+
 .sidebar-logout {
     border: 0;
     background: transparent;
@@ -723,6 +742,7 @@ table.data-table tbody tr:last-child td {
         right: 0;
         width: min(280px, 80vw);
         transform: translateX(100%);
+        box-shadow: -12px 0 32px rgba(15, 33, 56, 0.2);
     }
 
     .sidebar.sidebar-mobile-open {
@@ -758,6 +778,7 @@ table.data-table tbody tr:last-child td {
     position: sticky;
     top: 0;
     z-index: 40;
+    box-shadow: 0 1px 8px rgba(15, 33, 56, 0.04);
 }
 
 .topbar-mobile-toggle {
