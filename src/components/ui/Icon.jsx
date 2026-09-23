@@ -15,6 +15,10 @@ const PATHS = {
     presentation: <><rect x="3" y="4" width="18" height="13" rx="2" /><path d="M8 21h8M12 17v4M7 9h10M9 12h6" /></>,
     menu: <><path d="M4 6h16M4 12h16M4 18h16" /></>,
     logout: <><path d="M10 17l5-5-5-5M15 12H3M21 19V5a2 2 0 0 0-2-2h-6" /></>,
+    edit: <><path d="M12 20h9" /><path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L8 18l-4 1 1-4Z" /></>,
+    trash: <><path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3" /></>,
+    check: <path d="m5 12 4 4L19 6" />,
+    close: <><path d="m6 6 12 12M18 6 6 18" /></>,
     chevronRight: <path d="m9 18 6-6-6-6" />,
     chevronLeft: <path d="m15 18-6-6 6-6" />,
 };

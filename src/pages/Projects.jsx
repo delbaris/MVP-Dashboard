@@ -7,6 +7,8 @@ import EmptyState from "../components/ui/EmptyState.jsx";
 import { projectStatusMap } from "../utils/statusMaps.js";
 import EntityModal from "../components/ui/EntityModal.jsx";
 import Icon from "../components/ui/Icon.jsx";
+import ConfirmDialog from "../components/ui/ConfirmDialog.jsx";
+import { useApp } from "../context/AppContext.jsx";
 import { useData } from "../context/DataContext.jsx";
 
 export default function Projects() {
@@ -16,7 +18,9 @@ export default function Projects() {
     const [manager, setManager] = useState("all");
     const [formOpen, setFormOpen] = useState(false);
     const [editingProject, setEditingProject] = useState(null);
+    const [deletingProject, setDeletingProject] = useState(null);
     const { projects: projectRecords, employees: employeeRecords, addRecord, updateRecord, deleteRecord } = useData();
+    const { pushToast } = useApp();
 
     const managers = useMemo(() => {
         const ids = [...new Set(projectRecords.map((p) => p.managerId))];
@@ -95,8 +99,8 @@ export default function Projects() {
                                     <span className="health-pill" style={{ color: healthColor }}>{p.health}/100</span>
                                 </div>
                                 <div className="table-actions" onClick={(event) => event.stopPropagation()}>
-                                    <button type="button" className="btn btn-sm btn-ghost" onClick={() => { setEditingProject(p); setFormOpen(true); }}>ویرایش</button>
-                                    <button type="button" className="btn btn-sm btn-danger" onClick={() => { if (window.confirm("این پروژه از داده‌های دمو حذف شود؟")) deleteRecord("projects", p.id); }}>حذف</button>
+                                    <button type="button" className="btn btn-sm btn-ghost" onClick={() => { setEditingProject(p); setFormOpen(true); }}><Icon name="edit" size={14} /> ویرایش</button>
+                                    <button type="button" className="btn btn-sm btn-danger" onClick={() => setDeletingProject(p)}><Icon name="trash" size={14} /> حذف</button>
                                 </div>
                             </div>
                         );
@@ -119,10 +123,22 @@ export default function Projects() {
                 ]}
                 initialValues={editingProject || { status: "On Track", managerId: managers[0]?.id || "" }}
                 onSubmit={(values) => {
-                    if (editingProject) updateRecord("projects", editingProject.id, values);
-                    else addRecord("projects", { ...values, id: `proj-demo-${Date.now()}`, health: 100, progress: 0, memberIds: [], milestones: [], risks: [] });
+                    if (editingProject) {
+                        updateRecord("projects", editingProject.id, values);
+                        pushToast("اطلاعات پروژه با موفقیت ویرایش شد", "success");
+                    } else {
+                        addRecord("projects", { ...values, id: `proj-demo-${Date.now()}`, health: 100, progress: 0, memberIds: [], milestones: [], risks: [] });
+                        pushToast("پروژه جدید با موفقیت ثبت شد", "success");
+                    }
                     setEditingProject(null);
                 }}
+            />
+            <ConfirmDialog
+                open={!!deletingProject}
+                onClose={() => setDeletingProject(null)}
+                title="حذف پروژه"
+                description={`آیا از حذف «${deletingProject?.name || ""}» مطمئن هستید؟`}
+                onConfirm={() => { deleteRecord("projects", deletingProject.id); setDeletingProject(null); pushToast("پروژه با موفقیت حذف شد", "success"); }}
             />
         </div>
     );

@@ -8,6 +8,8 @@ import EmptyState from "../components/ui/EmptyState.jsx";
 import { employeeStatusMap } from "../utils/statusMaps.js";
 import EntityModal from "../components/ui/EntityModal.jsx";
 import Icon from "../components/ui/Icon.jsx";
+import ConfirmDialog from "../components/ui/ConfirmDialog.jsx";
+import { useApp } from "../context/AppContext.jsx";
 import { useData } from "../context/DataContext.jsx";
 
 export default function Employees() {
@@ -18,7 +20,9 @@ export default function Employees() {
     const [team, setTeam] = useState(params.get("team") || "all");
     const [formOpen, setFormOpen] = useState(false);
     const [editingEmployee, setEditingEmployee] = useState(null);
+    const [deletingEmployee, setDeletingEmployee] = useState(null);
     const { employees: employeeRecords, addRecord, updateRecord, deleteRecord } = useData();
+    const { pushToast } = useApp();
 
     const filtered = useMemo(() => {
         return employeeRecords.filter((e) => {
@@ -115,8 +119,8 @@ export default function Employees() {
                                             <td>{e.location}</td>
                                             <td>
                                                 <div className="table-actions">
-                                                    <button type="button" className="btn btn-sm btn-ghost" onClick={(event) => { event.stopPropagation(); setEditingEmployee(e); setFormOpen(true); }}>ویرایش</button>
-                                                    <button type="button" className="btn btn-sm btn-danger" onClick={(event) => { event.stopPropagation(); if (window.confirm("این پرسنل از داده‌های دمو حذف شود؟")) deleteRecord("employees", e.id); }}>حذف</button>
+                                                    <button type="button" className="btn btn-sm btn-ghost" onClick={(event) => { event.stopPropagation(); setEditingEmployee(e); setFormOpen(true); }}><Icon name="edit" size={14} /> ویرایش</button>
+                                                    <button type="button" className="btn btn-sm btn-danger" onClick={(event) => { event.stopPropagation(); setDeletingEmployee(e); }}><Icon name="trash" size={14} /> حذف</button>
                                                 </div>
                                             </td>
                                         </tr>
@@ -135,10 +139,22 @@ export default function Employees() {
                         fields={employeeFields}
                         initialValues={editingEmployee || { status: "Active" }}
                         onSubmit={(values) => {
-                            if (editingEmployee) updateRecord("employees", editingEmployee.id, values);
-                            else addRecord("employees", { ...values, id: `emp-demo-${Date.now()}`, avatarColor: "#3a6ea5", title: values.role, teamId: "team-management", managerId: "emp-01", phone: "", skills: [] });
+                            if (editingEmployee) {
+                                updateRecord("employees", editingEmployee.id, values);
+                                pushToast("اطلاعات پرسنل با موفقیت ویرایش شد", "success");
+                            } else {
+                                addRecord("employees", { ...values, id: `emp-demo-${Date.now()}`, avatarColor: "#3a6ea5", title: values.role, teamId: "team-management", managerId: "emp-01", phone: "", skills: [] });
+                                pushToast("پرسنل جدید با موفقیت ثبت شد", "success");
+                            }
                             setEditingEmployee(null);
                         }}
+                    />
+                    <ConfirmDialog
+                        open={!!deletingEmployee}
+                        onClose={() => setDeletingEmployee(null)}
+                        title="حذف پرسنل"
+                        description={`آیا از حذف «${deletingEmployee?.name || ""}» مطمئن هستید؟`}
+                        onConfirm={() => { deleteRecord("employees", deletingEmployee.id); setDeletingEmployee(null); pushToast("پرسنل با موفقیت حذف شد", "success"); }}
                     />
         </div>
     );

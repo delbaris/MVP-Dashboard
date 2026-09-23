@@ -5,11 +5,13 @@ import {
     getJalaliMonthStartWeekday,
     jalaliMonthNames,
     jalaliWeekdays,
+    toLatinDigits,
+    toPersianDigits,
     todayJalali,
 } from "../../utils/jalali.js";
 
 function parseValue(value) {
-    const [year, month, day] = (value || todayJalali()).split("-").map(Number);
+    const [year, month, day] = toLatinDigits(value || todayJalali()).split("-").map(Number);
     return { year, month, day };
 }
 
@@ -43,14 +45,14 @@ export default function JalaliDatePicker({ value, onChange, placeholder = "ان�
     return (
         <div className="jalali-picker">
             <div className="jalali-picker-input">
-                <input value={value || ""} readOnly placeholder={placeholder} onClick={() => setOpen((current) => !current)} aria-label="تاریخ شمسی" />
-                <button type="button" className="jalali-picker-trigger" onClick={() => setOpen((current) => !current)} aria-label="باز کردن تقویم"><Icon name="calendar" size={16} /></button>
+                <input value={value ? toPersianDigits(value.replaceAll("-", "/")) : ""} readOnly placeholder={placeholder} onClick={() => setOpen((current) => { if (!current) setView(parseValue(value)); return !current; })} aria-label="تاریخ شمسی" />
+                <button type="button" className="jalali-picker-trigger" onClick={() => setOpen((current) => { if (!current) setView(parseValue(value)); return !current; })} aria-label="باز کردن تقویم"><Icon name="calendar" size={16} /></button>
             </div>
             {open && (
                 <div className="jalali-calendar" role="dialog" aria-label="تقویم جلالی">
                     <div className="jalali-calendar-header">
                         <button type="button" onClick={() => moveMonth(1)} aria-label="ماه بعد">‹</button>
-                        <strong>{jalaliMonthNames[view.month - 1]} {view.year}</strong>
+                        <strong>{jalaliMonthNames[view.month - 1]} {toPersianDigits(view.year)}</strong>
                         <button type="button" onClick={() => moveMonth(-1)} aria-label="ماه قبل">›</button>
                     </div>
                     <div className="jalali-calendar-weekdays">
@@ -59,7 +61,7 @@ export default function JalaliDatePicker({ value, onChange, placeholder = "ان�
                     <div className="jalali-calendar-grid">
                         {days.map((day, index) => (
                             <button key={`${view.year}-${view.month}-${index}`} type="button" disabled={!day} className={day === selected.day && view.year === selected.year && view.month === selected.month ? "selected" : ""} onClick={() => day && selectDay(day)}>
-                                {day || ""}
+                                {day ? toPersianDigits(day) : ""}
                             </button>
                         ))}
                     </div>

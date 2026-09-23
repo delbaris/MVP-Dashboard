@@ -21,6 +21,8 @@ export default function Dashboard() {
     const openTasks = taskRecords.filter((t) => t.status !== "Done").length;
     const overdueTasks = taskRecords.filter((t) => t.status !== "Done" && t.dueDate < "1403-06-16").length;
     const criticalAlerts = alerts.filter((a) => a.severity === "بالا").length;
+    const riskProjects = projectRecords.filter((project) => ["At Risk", "Delayed"].includes(project.status)).sort((a, b) => a.health - b.health);
+    const highPriorityOpenTasks = taskRecords.filter((task) => task.priority === "بالا" && task.status !== "Done").length;
 
     const now = new Date();
     const dateStr = now.toLocaleDateString("fa-IR", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
@@ -79,7 +81,7 @@ export default function Dashboard() {
                 <div className="card-title-row">
                     <div>
                         <h3>تمرکز مدیریتی</h3>
-                        <p className="muted executive-focus-subtitle">سه نقطه ورود برای تصمیم‌گیری سریع و drill-down</p>
+                        <p className="muted executive-focus-subtitle">اولویت‌ها بر اساس ریسک، ظرفیت و وضعیت داده‌های عملیاتی مرتب شده‌اند.</p>
                     </div>
                     <span className="proto-badge">داده نمونه · آماده اتصال به API</span>
                 </div>
@@ -87,9 +89,9 @@ export default function Dashboard() {
                     <ExecutiveFocus
                         icon="alert"
                         tone="danger"
-                        label="نیازمند توجه فوری"
-                        value={`${overdueTasks} تسک دارای تأخیر`}
-                        detail={`${criticalAlerts} هشدار با اولویت بالا`}
+                        label="ریسک پروژه و زمان"
+                        value={`${riskProjects.length} پروژه پرریسک`}
+                        detail={`${overdueTasks} تأخیر · ${highPriorityOpenTasks} Task مهم باز`}
                         onClick={() => navigate("/alerts")}
                     />
                     <ExecutiveFocus
@@ -107,6 +109,14 @@ export default function Dashboard() {
                         value={`${activeRecruitment} فرآیند استخدامی`}
                         detail={`${employeeRecords.filter((e) => e.status === "Onboarding").length} نفر در آنبوردینگ`}
                         onClick={() => navigate("/recruitment")}
+                    />
+                    <ExecutiveFocus
+                        icon="chart"
+                        tone="neutral"
+                        label="بودجه و هزینه"
+                        value="نیازمند داده مالی"
+                        detail="KPI مالی ساختگی نمایش داده نمی‌شود"
+                        onClick={() => navigate("/analytics")}
                     />
                 </div>
             </section>

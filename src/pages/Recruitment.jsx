@@ -5,6 +5,8 @@ import Drawer from "../components/ui/Drawer.jsx";
 import EmptyState from "../components/ui/EmptyState.jsx";
 import EntityModal from "../components/ui/EntityModal.jsx";
 import Icon from "../components/ui/Icon.jsx";
+import ConfirmDialog from "../components/ui/ConfirmDialog.jsx";
+import { useApp } from "../context/AppContext.jsx";
 import { useData } from "../context/DataContext.jsx";
 
 export default function Recruitment() {
@@ -14,7 +16,9 @@ export default function Recruitment() {
     const [formOpen, setFormOpen] = useState(false);
     const [sourceFormOpen, setSourceFormOpen] = useState(false);
     const [editingSource, setEditingSource] = useState(null);
+    const [deletingSource, setDeletingSource] = useState(null);
     const { candidates: candidateRecords, recruitmentSources, addRecord, updateRecord, deleteRecord } = useData();
+    const { pushToast } = useApp();
     const highlightStage = params.get("stage");
     const stageLabels = useMemo(() => Object.fromEntries(recruitmentFunnel.map((stage) => [stage.key, stage.label])), []);
 
@@ -108,7 +112,7 @@ export default function Recruitment() {
                     { name: "resumeSummary", label: "خلاصه رزومه", type: "textarea" },
                 ]}
                 initialValues={{ stageKey: "applicants", source: recruitmentSources[0]?.name || "", score: 0, lastActivity: "امروز", interviews: [] }}
-                onSubmit={(values) => addRecord("candidates", { ...values, id: `cand-demo-${Date.now()}`, stage: stageLabels[values.stageKey], technicalScore: 0, behavioralScore: 0, managerReview: "", notes: "" })}
+                onSubmit={(values) => { addRecord("candidates", { ...values, id: `cand-demo-${Date.now()}`, stage: stageLabels[values.stageKey], technicalScore: 0, behavioralScore: 0, managerReview: "", notes: "" }); pushToast("داوطلب جدید با موفقیت ثبت شد", "success"); }}
             />
             <div className="card card-pad source-management">
                 <div className="card-title-row">
@@ -120,8 +124,8 @@ export default function Recruitment() {
                         <div className="source-row" key={source.id}>
                             <span>{source.name}</span>
                             <span className="table-actions">
-                                <button type="button" className="btn btn-sm btn-ghost" onClick={() => { setEditingSource(source); setSourceFormOpen(true); }}>ویرایش</button>
-                                <button type="button" className="btn btn-sm btn-danger" onClick={() => { if (window.confirm("این منبع جذب حذف شود؟")) deleteRecord("recruitmentSources", source.id); }}>حذف</button>
+                                <button type="button" className="btn btn-sm btn-ghost" onClick={() => { setEditingSource(source); setSourceFormOpen(true); }}><Icon name="edit" size={14} /> ویرایش</button>
+                                <button type="button" className="btn btn-sm btn-danger" onClick={() => setDeletingSource(source)}><Icon name="trash" size={14} /> حذف</button>
                             </span>
                         </div>
                     ))}
@@ -134,10 +138,22 @@ export default function Recruitment() {
                 fields={[{ name: "name", label: "عنوان منبع", required: true, placeholder: "مثلاً جاب‌ویژن" }]}
                 initialValues={editingSource || {}}
                 onSubmit={(values) => {
-                    if (editingSource) updateRecord("recruitmentSources", editingSource.id, values);
-                    else addRecord("recruitmentSources", { ...values, id: `source-demo-${Date.now()}` });
+                    if (editingSource) {
+                        updateRecord("recruitmentSources", editingSource.id, values);
+                        pushToast("منبع جذب با موفقیت ویرایش شد", "success");
+                    } else {
+                        addRecord("recruitmentSources", { ...values, id: `source-demo-${Date.now()}` });
+                        pushToast("منبع جذب با موفقیت اضافه شد", "success");
+                    }
                     setEditingSource(null);
                 }}
+            />
+            <ConfirmDialog
+                open={!!deletingSource}
+                onClose={() => setDeletingSource(null)}
+                title="حذف منبع جذب"
+                description={`آیا از حذف «${deletingSource?.name || ""}» مطمئن هستید؟`}
+                onConfirm={() => { deleteRecord("recruitmentSources", deletingSource.id); setDeletingSource(null); pushToast("منبع جذب با موفقیت حذف شد", "success"); }}
             />
         </div>
     );

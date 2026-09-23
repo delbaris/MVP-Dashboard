@@ -2,13 +2,20 @@ import React, { useEffect, useState } from "react";
 import Modal from "./Modal.jsx";
 import FormField from "./FormField.jsx";
 import JalaliDatePicker from "./JalaliDatePicker.jsx";
+import { todayJalali } from "../../utils/jalali.js";
 
 export default function EntityModal({ open, onClose, title, description, fields, initialValues, onSubmit, submitLabel = "ذخیره اطلاعات" }) {
     const [values, setValues] = useState(initialValues);
     const [error, setError] = useState("");
 
     useEffect(() => {
-        if (open) setValues(initialValues || {});
+        if (open) {
+            const nextValues = { ...(initialValues || {}) };
+            fields.filter((field) => field.type === "date").forEach((field) => {
+                if (!nextValues[field.name]) nextValues[field.name] = todayJalali();
+            });
+            setValues(nextValues);
+        }
     }, [open]);
 
     function update(name, value) {
