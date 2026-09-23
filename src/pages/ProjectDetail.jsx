@@ -12,6 +12,8 @@ import { useData } from "../context/DataContext.jsx";
 import { useApp } from "../context/AppContext.jsx";
 import ConfirmDialog from "../components/ui/ConfirmDialog.jsx";
 import Icon from "../components/ui/Icon.jsx";
+import Breadcrumbs from "../components/ui/Breadcrumbs.jsx";
+import { toPersianDigits } from "../utils/jalali.js";
 
 const TABS = [
     { key: "overview", label: "نمای کلی" },
@@ -46,6 +48,7 @@ export default function ProjectDetail() {
 
     return (
         <div>
+            <Breadcrumbs items={[{ label: "پروژه‌ها", to: "/projects" }, { label: project.name }]} />
             <div className="back-link" onClick={() => navigate("/projects")}>→ بازگشت به فهرست پروژه‌ها</div>
 
             <div className="detail-header card card-pad">
@@ -67,7 +70,7 @@ export default function ProjectDetail() {
             <div className="card card-pad" style={{ marginBottom: 20 }}>
                 <div className="hstack" style={{ justifyContent: "space-between", marginBottom: 8 }}>
                     <span className="section-title" style={{ margin: 0 }}>پیشرفت کلی پروژه</span>
-                    <span style={{ fontWeight: 700 }}>{project.progress}٪</span>
+                    <span style={{ fontWeight: 700 }}>{toPersianDigits(project.progress)}٪</span>
                 </div>
                 <ProgressBar value={project.progress} />
             </div>
@@ -94,15 +97,15 @@ export default function ProjectDetail() {
                             <div className="stat-mini-label">اعضای تیم</div>
                         </div>
                         <div className="stat-mini">
-                            <div className="stat-mini-value">{tasks.filter((t) => t.status !== "Done").length}</div>
+                            <div className="stat-mini-value">{toPersianDigits(tasks.filter((t) => t.status !== "Done").length)}</div>
                             <div className="stat-mini-label">Taskهای باز</div>
                         </div>
                         <div className="stat-mini">
-                            <div className="stat-mini-value">{project.milestones.length}</div>
+                            <div className="stat-mini-value">{toPersianDigits(project.milestones.length)}</div>
                             <div className="stat-mini-label">Milestoneها</div>
                         </div>
                         <div className="stat-mini">
-                            <div className="stat-mini-value">{project.risks.length}</div>
+                            <div className="stat-mini-value">{toPersianDigits(project.risks.length)}</div>
                             <div className="stat-mini-label">ریسک شناسایی‌شده</div>
                         </div>
                     </div>

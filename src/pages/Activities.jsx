@@ -5,6 +5,7 @@ import { employees, getEmployeeById } from "../data/employees.js";
 import { projects } from "../data/projects.js";
 import Avatar from "../components/ui/Avatar.jsx";
 import EmptyState from "../components/ui/EmptyState.jsx";
+import { toPersianDigits } from "../utils/jalali.js";
 
 const ACTIVITY_TYPES = [
     "Task Update",
@@ -73,7 +74,7 @@ export default function Activities() {
                         ))}
                     </select>
                 </div>
-                <div className="result-count" style={{ marginTop: 10 }}>{filtered.length} فعالیت از {activities.length} فعالیت ثبت‌شده</div>
+                <div className="result-count" style={{ marginTop: 10 }}>{toPersianDigits(filtered.length)} فعالیت از {toPersianDigits(activities.length)} فعالیت ثبت‌شده</div>
             </div>
 
             <div className="card card-pad">

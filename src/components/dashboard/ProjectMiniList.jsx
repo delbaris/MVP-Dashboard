@@ -4,6 +4,7 @@ import Badge from "../ui/Badge.jsx";
 import ProgressBar from "../ui/ProgressBar.jsx";
 import { projectStatusMap } from "../../utils/statusMaps.js";
 import { useData } from "../../context/DataContext.jsx";
+import { toPersianDigits } from "../../utils/jalali.js";
 
 export default function ProjectMiniList() {
     const navigate = useNavigate();
@@ -31,7 +32,7 @@ export default function ProjectMiniList() {
                             </div>
                             <ProgressBar value={p.progress} />
                             <div className="hstack" style={{ justifyContent: "space-between", marginTop: 6 }}>
-                                <span className="faint" style={{ fontSize: 11.5 }}>پیشرفت {p.progress}٪</span>
+                                <span className="faint" style={{ fontSize: 11.5 }}>پیشرفت {toPersianDigits(p.progress)}٪</span>
                                 <span className="faint" style={{ fontSize: 11.5 }}>مهلت: {p.deadline}</span>
                             </div>
                         </div>

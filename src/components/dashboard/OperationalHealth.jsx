@@ -1,4 +1,5 @@
 import React from "react";
+import { toPersianDigits } from "../../utils/jalali.js";
 
 export default function OperationalHealth({ score = 86 }) {
     const circumference = 2 * Math.PI * 42;
@@ -24,10 +25,10 @@ export default function OperationalHealth({ score = 86 }) {
                         transform="rotate(-90 50 50)"
                     />
                     <text x="50" y="46" textAnchor="middle" fontSize="22" fontWeight="800" fill="#1c2536">
-                        {score}
+                        {toPersianDigits(score)}
                     </text>
                     <text x="50" y="63" textAnchor="middle" fontSize="10" fill="#98a2b3">
-                        از 100
+                        از ۱۰۰
                     </text>
                 </svg>
                 <div className="oh-note">

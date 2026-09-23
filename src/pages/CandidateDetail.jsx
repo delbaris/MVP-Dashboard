@@ -3,6 +3,8 @@ import { useNavigate, useParams } from "react-router-dom";
 import { getCandidateById } from "../data/candidates.js";
 import EmptyState from "../components/ui/EmptyState.jsx";
 import Badge from "../components/ui/Badge.jsx";
+import Breadcrumbs from "../components/ui/Breadcrumbs.jsx";
+import { toPersianDigits } from "../utils/jalali.js";
 
 export default function CandidateDetail() {
     const { id } = useParams();
@@ -15,6 +17,7 @@ export default function CandidateDetail() {
 
     return (
         <div>
+            <Breadcrumbs items={[{ label: "جذب و استخدام", to: "/recruitment" }, { label: candidate.name }]} />
             <div className="back-link" onClick={() => navigate("/recruitment")}>→ بازگشت به Pipeline استخدام</div>
 
             <div className="detail-header card card-pad">
@@ -28,7 +31,7 @@ export default function CandidateDetail() {
                     </div>
                 </div>
                 <div className="detail-header-actions">
-                    <span className="score-pill" style={{ fontSize: 13 }}>امتیاز کل: {candidate.score}</span>
+                    <span className="score-pill" style={{ fontSize: 13 }}>امتیاز کل: {toPersianDigits(candidate.score)}</span>
                 </div>
             </div>
 
@@ -62,7 +65,7 @@ export default function CandidateDetail() {
                                                 <td>{iv.interviewer}</td>
                                                 <td>{iv.date}</td>
                                                 <td>{iv.result}</td>
-                                                <td>{iv.score}</td>
+                                                <td>{toPersianDigits(iv.score)}</td>
                                             </tr>
                                         ))}
                                     </tbody>
@@ -82,11 +85,11 @@ export default function CandidateDetail() {
                         <div className="section-title">امتیازها</div>
                         <div className="stat-mini-grid">
                             <div className="stat-mini">
-                                <div className="stat-mini-value">{candidate.technicalScore}</div>
+                                <div className="stat-mini-value">{toPersianDigits(candidate.technicalScore)}</div>
                                 <div className="stat-mini-label">امتیاز فنی</div>
                             </div>
                             <div className="stat-mini">
-                                <div className="stat-mini-value">{candidate.behavioralScore}</div>
+                                <div className="stat-mini-value">{toPersianDigits(candidate.behavioralScore)}</div>
                                 <div className="stat-mini-label">امتیاز رفتاری</div>
                             </div>
                         </div>
