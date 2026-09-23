@@ -8,20 +8,18 @@ import ProjectMiniList from "../components/dashboard/ProjectMiniList.jsx";
 import ActivityFeed from "../components/dashboard/ActivityFeed.jsx";
 import AlertsPanel from "../components/dashboard/AlertsPanel.jsx";
 import Icon from "../components/ui/Icon.jsx";
-import { employees } from "../data/employees.js";
-import { candidates } from "../data/candidates.js";
-import { projects } from "../data/projects.js";
-import { tasks, getOverdueTasks } from "../data/tasks.js";
+import { useData } from "../context/DataContext.jsx";
 import { alerts } from "../data/alerts.js";
 
 export default function Dashboard() {
     const navigate = useNavigate();
+    const { employees: employeeRecords, candidates: candidateRecords, projects: projectRecords, tasks: taskRecords } = useData();
 
-    const activeEmployees = employees.filter((e) => e.status === "Active").length;
-    const activeRecruitment = candidates.filter((c) => !["hired", "rejected"].includes(c.stageKey)).length;
-    const activeProjects = projects.filter((p) => p.status !== "Completed").length;
-    const openTasks = tasks.filter((t) => t.status !== "Done").length;
-    const overdueTasks = getOverdueTasks().length;
+    const activeEmployees = employeeRecords.filter((e) => e.status === "Active").length;
+    const activeRecruitment = candidateRecords.filter((c) => !["hired", "rejected"].includes(c.stageKey)).length;
+    const activeProjects = projectRecords.filter((p) => p.status !== "Completed").length;
+    const openTasks = taskRecords.filter((t) => t.status !== "Done").length;
+    const overdueTasks = taskRecords.filter((t) => t.status !== "Done" && t.dueDate < "1403-06-16").length;
     const criticalAlerts = alerts.filter((a) => a.severity === "بالا").length;
 
     const now = new Date();
@@ -45,21 +43,21 @@ export default function Dashboard() {
                         <MiniStat label="کارکنان فعال" value={activeEmployees} note="+3 این ماه" tone="up" onClick={() => navigate("/employees")} />
                         <MiniStat
                             label="نیروهای جدید"
-                            value={employees.filter((e) => e.status === "Onboarding").length + 2}
+                            value={employeeRecords.filter((e) => e.status === "Onboarding").length + 2}
                             note="در 30 روز اخیر"
                             tone="up"
                             onClick={() => navigate("/employees?status=Onboarding")}
                         />
                         <MiniStat
                             label="در حال آنبوردینگ"
-                            value={employees.filter((e) => e.status === "Onboarding").length}
+                            value={employeeRecords.filter((e) => e.status === "Onboarding").length}
                             note="نیازمند پیگیری"
                             tone="flat"
                             onClick={() => navigate("/employees?status=Onboarding")}
                         />
                         <MiniStat
                             label="بدون تخصیص"
-                            value={employees.filter((e) => e.status === "Available").length}
+                            value={employeeRecords.filter((e) => e.status === "Available").length}
                             note="آماده تخصیص پروژه"
                             tone="flat"
                             onClick={() => navigate("/employees?status=Available")}
@@ -72,7 +70,7 @@ export default function Dashboard() {
                 <KpiCard icon="👥" label="کارکنان فعال" value={activeEmployees} trend="+3" trendTone="up" note="نسبت به ماه گذشته" onClick={() => navigate("/employees")} />
                 <KpiCard icon="🧩" label="فرآیندهای استخدامی باز" value={activeRecruitment} trend="+2" trendTone="up" note="در جریان بررسی" onClick={() => navigate("/recruitment")} />
                 <KpiCard icon="📁" label="پروژه‌های فعال" value={activeProjects} note="از 6 پروژه کل" onClick={() => navigate("/projects")} />
-                <KpiCard icon="🗂️" label="Taskهای باز" value={openTasks} note={`از ${tasks.length} Task کل`} onClick={() => navigate("/projects")} />
+                <KpiCard icon="🗂️" label="کارهای باز" value={openTasks} note={`از ${taskRecords.length} کار کل`} onClick={() => navigate("/projects")} />
                 <KpiCard icon="⏰" label="Taskهای دارای تاخیر" value={overdueTasks} trend={overdueTasks > 0 ? "نیازمند توجه" : "پاک"} trendTone={overdueTasks > 0 ? "down" : "up"} onClick={() => navigate("/alerts")} />
                 <KpiCard icon="🚨" label="هشدارهای مهم" value={criticalAlerts} trend="بالا" trendTone="down" note="نیازمند بررسی فوری" onClick={() => navigate("/alerts")} />
             </div>
@@ -98,7 +96,7 @@ export default function Dashboard() {
                         icon="folder"
                         tone="info"
                         label="ظرفیت و منابع"
-                        value={`${employees.filter((e) => e.status === "Available").length} نفر آماده تخصیص`}
+                        value={`${employeeRecords.filter((e) => e.status === "Available").length} نفر آماده تخصیص`}
                         detail={`${activeProjects} پروژه فعال`}
                         onClick={() => navigate("/projects")}
                     />
@@ -107,7 +105,7 @@ export default function Dashboard() {
                         tone="success"
                         label="چرخه نیروی انسانی"
                         value={`${activeRecruitment} فرآیند استخدامی`}
-                        detail={`${employees.filter((e) => e.status === "Onboarding").length} نفر در آنبوردینگ`}
+                        detail={`${employeeRecords.filter((e) => e.status === "Onboarding").length} نفر در آنبوردینگ`}
                         onClick={() => navigate("/recruitment")}
                     />
                 </div>

@@ -17,6 +17,7 @@ import Settings from "./pages/Settings.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Login from "./pages/Login.jsx";
 import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
+import { DataProvider } from "./context/DataContext.jsx";
 
 function ProtectedRoutes() {
     const { user } = useAuth();
@@ -44,9 +45,9 @@ function ProtectedRoutes() {
 export default function App() {
     return (
         <AuthProvider>
-            <AppProvider>
-                <ProtectedRoutes />
-            </AppProvider>
+            <DataProvider>
+                <AppProvider><ProtectedRoutes /></AppProvider>
+            </DataProvider>
         </AuthProvider>
     );
 }

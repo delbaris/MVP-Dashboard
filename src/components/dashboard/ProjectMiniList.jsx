@@ -1,13 +1,13 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
-import { projects } from "../../data/projects.js";
-import { getEmployeeById } from "../../data/employees.js";
 import Badge from "../ui/Badge.jsx";
 import ProgressBar from "../ui/ProgressBar.jsx";
 import { projectStatusMap } from "../../utils/statusMaps.js";
+import { useData } from "../../context/DataContext.jsx";
 
 export default function ProjectMiniList() {
     const navigate = useNavigate();
+    const { projects, employees } = useData();
     const sorted = [...projects].sort((a, b) => a.health - b.health).slice(0, 5);
 
     return (
@@ -18,7 +18,7 @@ export default function ProjectMiniList() {
             </div>
             <div className="vstack" style={{ gap: 12 }}>
                 {sorted.map((p) => {
-                    const manager = getEmployeeById(p.managerId);
+                    const manager = employees.find((employee) => employee.id === p.managerId);
                     const st = projectStatusMap[p.status];
                     return (
                         <div key={p.id} className="mini-project-row" onClick={() => navigate(`/projects/${p.id}`)}>

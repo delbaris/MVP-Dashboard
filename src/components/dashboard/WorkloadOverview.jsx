@@ -1,10 +1,9 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import { teams } from "../../data/teams.js";
-import { employees } from "../../data/employees.js";
-import { tasks } from "../../data/tasks.js";
+import { useData } from "../../context/DataContext.jsx";
 
-function computeAssigned(teamId) {
+function computeAssigned(teamId, employees, tasks) {
     const teamEmployeeIds = employees.filter((e) => e.teamId === teamId).map((e) => e.id);
     const activeTasks = tasks.filter((t) => teamEmployeeIds.includes(t.assigneeId) && t.status !== "Done");
     // هر Task باز تقریبا 4 واحد بار کاری فرض می‌شود (Demo)
@@ -13,6 +12,7 @@ function computeAssigned(teamId) {
 
 export default function WorkloadOverview() {
     const navigate = useNavigate();
+    const { employees, tasks } = useData();
 
     return (
         <div className="card card-pad">
@@ -22,7 +22,7 @@ export default function WorkloadOverview() {
             </div>
             <div className="workload-list">
                 {teams.map((team) => {
-                    const assigned = computeAssigned(team.id);
+                    const assigned = computeAssigned(team.id, employees, tasks);
                     const pct = Math.min(100, Math.round((assigned / team.capacity) * 100));
                     const overloaded = pct >= 90;
                     const barColor = overloaded ? "#b23b3b" : pct >= 70 ? "#b8860b" : "#1f8a5f";
