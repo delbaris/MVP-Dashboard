@@ -159,6 +159,99 @@
     grid-column: span 2;
 }
 
+.jalali-picker {
+    position: relative;
+}
+
+.jalali-picker-input {
+    display: flex;
+    align-items: center;
+    direction: ltr;
+}
+
+.jalali-picker-input input {
+    direction: rtl;
+    border-radius: var(--radius-sm) 0 0 var(--radius-sm);
+}
+
+.jalali-picker-trigger {
+    flex: 0 0 38px;
+    align-self: stretch;
+    border: 1px solid var(--color-border);
+    border-right: 0;
+    border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+    color: var(--color-primary);
+    background: var(--color-neutral-bg);
+    cursor: pointer;
+}
+
+.jalali-calendar {
+    position: absolute;
+    top: calc(100% + 8px);
+    right: 0;
+    z-index: 80;
+    width: min(300px, calc(100vw - 36px));
+    padding: 12px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    box-shadow: var(--shadow-lg);
+}
+
+.jalali-calendar-header,
+.jalali-calendar-weekdays,
+.jalali-calendar-grid {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 4px;
+    align-items: center;
+}
+
+.jalali-calendar-header {
+    grid-template-columns: 32px 1fr 32px;
+    margin-bottom: 12px;
+    text-align: center;
+}
+
+.jalali-calendar-header button,
+.jalali-calendar-grid button {
+    border: 0;
+    border-radius: 6px;
+    background: transparent;
+    color: var(--color-text);
+    min-height: 30px;
+    cursor: pointer;
+}
+
+.jalali-calendar-header button:hover,
+.jalali-calendar-grid button:hover:not(:disabled),
+.jalali-calendar-grid button.selected {
+    background: var(--color-primary);
+    color: #fff;
+}
+
+.jalali-calendar-weekdays {
+    color: var(--color-text-faint);
+    font-size: 11px;
+    text-align: center;
+}
+
+.jalali-calendar-grid button:disabled {
+    cursor: default;
+}
+
+.jalali-calendar-today {
+    width: 100%;
+    border: 0;
+    border-top: 1px solid var(--color-border);
+    margin-top: 10px;
+    padding-top: 9px;
+    background: transparent;
+    color: var(--color-primary-light);
+    cursor: pointer;
+    font: inherit;
+}
+
 @media (max-width: 620px) {
     .entity-form-grid,
     .integration-form-grid {
@@ -263,7 +356,7 @@ p {
 
 .app-content {
     flex: 1;
-    padding: 24px 28px 40px;
+    padding: calc(var(--topbar-height) + 24px) 28px 40px;
     max-width: 1440px;
     width: 100%;
     margin: 0 auto;
@@ -869,8 +962,10 @@ table.data-table tbody tr:last-child td {
     align-items: center;
     gap: 16px;
     padding: 0 22px;
-    position: sticky;
+    position: fixed;
     top: 0;
+    left: 0;
+    right: var(--sidebar-current-width);
     z-index: 40;
     box-shadow: 0 1px 8px rgba(15, 33, 56, 0.04);
 }
@@ -889,6 +984,7 @@ table.data-table tbody tr:last-child td {
         flex-wrap: wrap;
         padding: 10px 14px;
         gap: 10px;
+        right: 0;
     }
 
     .global-search {
@@ -919,11 +1015,15 @@ table.data-table tbody tr:last-child td {
     }
 
     .presentation-mode .app-content {
-        padding-top: 16px;
+        padding-top: 116px;
     }
 
     .topbar-mobile-toggle {
         display: inline-flex;
+    }
+
+    .app-content {
+        padding-top: 116px;
     }
 }
 
@@ -1306,7 +1406,7 @@ table.data-table tbody tr:last-child td {
 
 .presentation-mode .app-content {
     max-width: 1600px;
-    padding-top: 24px;
+    padding-top: calc(var(--topbar-height) + 24px);
 }
 
 /* ===== Dashboard ===== */
@@ -1908,6 +2008,34 @@ table.data-table tbody tr:last-child td {
     font-size: 12px;
 }
 
+.source-management {
+    margin-top: 20px;
+}
+
+.source-list {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 8px;
+}
+
+.source-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-sm);
+    padding: 9px 10px;
+    font-size: 12px;
+}
+
+.table-actions {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
 /* ===== Risk / milestone lists ===== */
 .risk-row {
     display: flex;
@@ -1955,6 +2083,7 @@ table.data-table tbody tr:last-child td {
 
 .chart-card {
     padding: 20px;
+    overflow: visible;
 }
 
 @media (max-width: 1100px) {
