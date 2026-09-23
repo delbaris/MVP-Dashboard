@@ -4,6 +4,7 @@ import { employees } from "../../data/employees.js";
 import { projects } from "../../data/projects.js";
 import { tasks } from "../../data/tasks.js";
 import { activities } from "../../data/activities.js";
+import Icon from "../ui/Icon.jsx";
 
 export default function GlobalSearch() {
     const [query, setQuery] = useState("");
@@ -32,7 +33,7 @@ export default function GlobalSearch() {
     return (
         <div className="global-search">
             <div className="global-search-input">
-                <span>🔎</span>
+                <Icon name="search" size={17} />
                 <input
                     placeholder="جستجوی کارمند، پروژه، Task یا فعالیت..."
                     value={query}

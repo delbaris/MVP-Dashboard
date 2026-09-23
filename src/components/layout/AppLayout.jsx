@@ -11,9 +11,9 @@ export default function AppLayout() {
     const { presentationMode } = useApp();
 
     return (
-        <div className={`app-shell ${compact || presentationMode ? "sidebar-compact" : ""} ${presentationMode ? "presentation-mode" : ""}`}>
+        <div className={`app-shell ${compact ? "sidebar-compact" : ""} ${presentationMode ? "presentation-mode" : ""}`}>
             <Sidebar
-                compact={compact || presentationMode}
+                compact={compact}
                 onToggleCompact={() => setCompact((v) => !v)}
                 mobileOpen={mobileOpen}
                 onCloseMobile={() => setMobileOpen(false)}

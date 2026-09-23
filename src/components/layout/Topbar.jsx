@@ -1,13 +1,13 @@
 import React, { useEffect, useState } from "react";
 import GlobalSearch from "./GlobalSearch.jsx";
 import { useApp } from "../../context/AppContext.jsx";
-
-const WEEKDAYS = ["یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه", "شنبه"];
+import { useAuth } from "../../context/AuthContext.jsx";
+import Icon from "../ui/Icon.jsx";
 
 function useClock() {
     const [now, setNow] = useState(new Date());
     useEffect(() => {
-        const id = setInterval(() => setNow(new Date()), 1000 * 30);
+        const id = setInterval(() => setNow(new Date()), 1000);
         return () => clearInterval(id);
     }, []);
     return now;
@@ -15,19 +15,21 @@ function useClock() {
 
 export default function Topbar({ onOpenMobileSidebar }) {
     const now = useClock();
-    const { role, setRole, currentRole, presentationMode, setPresentationMode } = useApp();
+    const { role, setRole, presentationMode, setPresentationMode } = useApp();
+    const { logout } = useAuth();
 
-    const timeStr = now.toLocaleTimeString("fa-IR", { hour: "2-digit", minute: "2-digit" });
-    const weekday = WEEKDAYS[now.getDay()];
+    const dateStr = new Intl.DateTimeFormat("fa-IR-u-ca-persian", { year: "numeric", month: "long", day: "numeric" }).format(now);
+    const weekday = new Intl.DateTimeFormat("fa-IR-u-ca-persian", { weekday: "long" }).format(now);
+    const timeStr = new Intl.DateTimeFormat("fa-IR", { hour: "2-digit", minute: "2-digit", second: "2-digit" }).format(now);
 
     return (
         <header className="topbar">
-            <button className="topbar-mobile-toggle" onClick={onOpenMobileSidebar}>☰</button>
+            <button className="topbar-mobile-toggle" onClick={onOpenMobileSidebar} aria-label="باز کردن منو"><Icon name="menu" /></button>
             <GlobalSearch />
             <div className="topbar-right">
                 <div className="topbar-clock">
                     <span className="topbar-clock-time">{timeStr}</span>
-                    <span className="faint">{weekday}</span>
+                    <span className="faint">{weekday}، {dateStr}</span>
                 </div>
                 <select className="role-select" value={role} onChange={(e) => setRole(e.target.value)} title="نقش کاربری (مفهومی)">
                     <option value="executive">Executive</option>
@@ -41,8 +43,9 @@ export default function Topbar({ onOpenMobileSidebar }) {
                     onClick={() => setPresentationMode((v) => !v)}
                     title="حالت ارائه برای نمایش به مدیران"
                 >
-                    🖥️ حالت ارائه
+                    <Icon name="presentation" size={16} /> {presentationMode ? "خروج از ارائه" : "حالت ارائه"}
                 </button>
+                <button className="btn btn-sm btn-ghost topbar-logout" onClick={logout} title="خروج از حساب"><Icon name="logout" size={16} /> خروج</button>
             </div>
         </header>
     );

@@ -50,7 +50,7 @@ export default function Settings() {
                 <div className="card card-pad">
                     <div className="section-title">حالت ارائه (Presentation Mode)</div>
                     <p className="muted" style={{ fontSize: 13, marginBottom: 12 }}>
-                        در این حالت، Sidebar کمینه شده و صفحه مرکز فرماندهی برای ارائه حضوری به مدیرعامل بزرگ‌تر و تمیزتر نمایش داده می‌شود.
+                        در این حالت، بدون به‌هم‌زدن چیدمان ریسپانسیو، صفحه برای ارائه حضوری به مدیرعامل بزرگ‌تر و تمیزتر نمایش داده می‌شود.
                     </p>
                     <button
                         className={`btn ${presentationMode ? "btn-primary" : ""}`}
