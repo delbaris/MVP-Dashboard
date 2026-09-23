@@ -83,7 +83,7 @@ export default function Dashboard() {
                         <h3>تمرکز مدیریتی</h3>
                         <p className="muted executive-focus-subtitle">سه نقطه ورود برای تصمیم‌گیری سریع و drill-down</p>
                     </div>
-                    <span className="proto-badge">به‌روزرسانی زنده</span>
+                    <span className="proto-badge">داده نمونه · آماده اتصال به API</span>
                 </div>
                 <div className="executive-focus-grid">
                     <ExecutiveFocus
