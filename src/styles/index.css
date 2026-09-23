@@ -1604,6 +1604,188 @@ table.data-table tbody tr:last-child td {
     background: var(--color-danger-bg);
 }
 
+.project-finance-strip {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.project-finance-strip > div {
+    display: grid;
+    gap: 4px;
+    min-width: 0;
+}
+
+.project-finance-label {
+    color: var(--color-text-muted);
+    font-size: 11px;
+}
+
+.project-finance-strip strong {
+    color: var(--color-navy-900);
+    font-size: 14px;
+}
+
+.project-finance-source {
+    grid-column: 1 / -1;
+    color: var(--color-text-faint);
+    font-size: 10.5px;
+    border-top: 1px solid var(--color-border);
+    padding-top: 10px;
+}
+
+.project-structure {
+    display: grid;
+    gap: 14px;
+}
+
+.project-tree-legend {
+    color: var(--color-text-muted);
+    font-size: 12px;
+    background: var(--color-neutral-bg);
+    border-radius: 8px;
+    padding: 9px 12px;
+}
+
+.project-tree {
+    display: grid;
+    gap: 8px;
+    overflow-x: auto;
+    padding: 4px 2px 8px;
+}
+
+.project-tree-branch {
+    min-width: 480px;
+}
+
+.project-tree-person {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    min-height: 48px;
+    border: 1px solid var(--color-border);
+    border-radius: 10px;
+    background: var(--color-surface);
+    padding: 7px 10px;
+}
+
+.project-tree-level-0 > .project-tree-person {
+    border-color: #b9cfe6;
+    background: var(--color-info-bg);
+}
+
+.project-tree-person-copy {
+    display: grid;
+    min-width: 150px;
+}
+
+.project-tree-person-copy strong {
+    color: var(--color-navy-900);
+    font-size: 12px;
+}
+
+.project-tree-person-copy span {
+    color: var(--color-text-muted);
+    font-size: 10.5px;
+}
+
+.project-tree-task-count {
+    margin-right: auto;
+    color: var(--color-text-muted);
+    font-size: 11px;
+}
+
+.project-tree-toggle {
+    width: 24px;
+    height: 24px;
+    border: 1px solid var(--color-border);
+    border-radius: 6px;
+    background: var(--color-surface);
+    color: var(--color-primary);
+    font-size: 17px;
+    line-height: 1;
+}
+
+.project-tree-children {
+    display: grid;
+    gap: 6px;
+    margin: 6px 18px 0 0;
+    padding-right: 14px;
+    border-right: 1px solid #cbd8e7;
+}
+
+.project-tree-task {
+    display: flex;
+    align-items: center;
+    gap: 7px;
+    min-height: 32px;
+    color: var(--color-text-muted);
+    font-size: 11px;
+    padding: 4px 8px;
+    border-radius: 7px;
+    background: var(--color-neutral-bg);
+}
+
+.project-tree-task > span:nth-child(2) {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.project-tree-task-dot {
+    width: 6px;
+    height: 6px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: var(--color-primary-light);
+}
+
+.project-structure-summary,
+.project-resource-grid {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 12px;
+}
+
+.project-structure-summary > div {
+    display: grid;
+    gap: 2px;
+    padding: 10px 12px;
+    border-radius: 8px;
+    background: var(--color-neutral-bg);
+}
+
+.project-structure-summary strong {
+    color: var(--color-navy-900);
+    font-size: 18px;
+}
+
+.project-structure-summary span {
+    color: var(--color-text-muted);
+    font-size: 11px;
+}
+
+.project-resource-grid > div {
+    display: grid;
+    gap: 7px;
+    color: var(--color-text-muted);
+    font-size: 11px;
+}
+
+@media (max-width: 720px) {
+    .project-finance-strip {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .project-structure-summary,
+    .project-resource-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
 @media (max-width: 720px) {
     .topbar-right {
         display: grid;

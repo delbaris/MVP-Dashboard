@@ -14,9 +14,12 @@ import ConfirmDialog from "../components/ui/ConfirmDialog.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import Breadcrumbs from "../components/ui/Breadcrumbs.jsx";
 import { toPersianDigits } from "../utils/jalali.js";
+import ProjectStructure from "../components/project/ProjectStructure.jsx";
+import { formatDemoMoney, getProjectFinancials } from "../utils/projectFinancials.js";
 
 const TABS = [
     { key: "overview", label: "نمای کلی" },
+    { key: "structure", label: "ساختار و منابع" },
     { key: "team", label: "اعضای تیم" },
     { key: "milestones", label: "Milestoneها" },
     { key: "tasks", label: "Taskها" },
@@ -45,6 +48,8 @@ export default function ProjectDetail() {
     const activities = getActivitiesByProject(project.id);
     const st = projectStatusMap[project.status];
     const healthColor = project.health >= 80 ? "var(--color-success)" : project.health >= 60 ? "var(--color-warning)" : "var(--color-danger)";
+    const financials = getProjectFinancials(project);
+    const taskProgress = tasks.length ? Math.round(tasks.reduce((sum, task) => sum + Number(task.progress || 0), 0) / tasks.length) : 0;
 
     return (
         <div>
@@ -71,6 +76,26 @@ export default function ProjectDetail() {
                 <div className="hstack" style={{ justifyContent: "space-between", marginBottom: 8 }}>
                     <span className="section-title" style={{ margin: 0 }}>پیشرفت کلی پروژه</span>
                     <span style={{ fontWeight: 700 }}>{toPersianDigits(project.progress)}٪</span>
+                </div>
+
+                <div className="project-finance-strip card card-pad">
+                    <div>
+                        <span className="project-finance-label">بودجه برنامه‌ریزی‌شده</span>
+                        <strong>{formatDemoMoney(financials.plannedBudget)}</strong>
+                    </div>
+                    <div>
+                        <span className="project-finance-label">هزینه مصرف‌شده</span>
+                        <strong>{formatDemoMoney(financials.actualCost)}</strong>
+                    </div>
+                    <div>
+                        <span className="project-finance-label">مانده بودجه</span>
+                        <strong>{formatDemoMoney(financials.remainingBudget)}</strong>
+                    </div>
+                    <div>
+                        <span className="project-finance-label">ساعت واقعی / برنامه</span>
+                        <strong>{toPersianDigits(financials.actualHours)} / {toPersianDigits(financials.plannedHours)}</strong>
+                    </div>
+                    <small className="project-finance-source">منبع: {financials.source} · هزینه واقعی در فاز Backend از TimeEntry تأییدشده محاسبه می‌شود.</small>
                 </div>
                 <ProgressBar value={project.progress} />
             </div>
@@ -107,6 +132,41 @@ export default function ProjectDetail() {
                         <div className="stat-mini">
                             <div className="stat-mini-value">{toPersianDigits(project.risks.length)}</div>
                             <div className="stat-mini-label">ریسک شناسایی‌شده</div>
+                        </div>
+                    </div>
+                </div>
+            )}
+
+            {tab === "structure" && (
+                <div className="vstack" style={{ gap: 16 }}>
+                    <div className="card card-pad">
+                        <div className="card-title-row">
+                            <div>
+                                <h3>درخت تیم و مسئولیت‌ها</h3>
+                                <p className="muted" style={{ fontSize: 12, marginTop: 4 }}>نمای شماتیک مدیر پروژه، افراد درگیر و Taskهای هر نفر</p>
+                            </div>
+                            <span className="proto-badge">داده دمو · آماده اتصال به API</span>
+                        </div>
+                        <ProjectStructure manager={manager} members={members} tasks={tasks} />
+                    </div>
+                    <div className="card card-pad">
+                        <div className="card-title-row">
+                            <h3>مصرف منابع و بودجه</h3>
+                            <span className="muted" style={{ fontSize: 12 }}>انحراف هزینه: {toPersianDigits(financials.budgetVariance.toFixed(1))}٪</span>
+                        </div>
+                        <div className="project-resource-grid">
+                            <div>
+                                <div className="hstack" style={{ justifyContent: "space-between" }}><span>پیشرفت پروژه</span><strong>{toPersianDigits(project.progress)}٪</strong></div>
+                                <ProgressBar value={project.progress} />
+                            </div>
+                            <div>
+                                <div className="hstack" style={{ justifyContent: "space-between" }}><span>پیشرفت Taskها</span><strong>{toPersianDigits(taskProgress)}٪</strong></div>
+                                <ProgressBar value={taskProgress} />
+                            </div>
+                            <div>
+                                <div className="hstack" style={{ justifyContent: "space-between" }}><span>مصرف ساعت</span><strong>{toPersianDigits(Math.round((financials.actualHours / financials.plannedHours) * 100))}٪</strong></div>
+                                <ProgressBar value={Math.min(Math.round((financials.actualHours / financials.plannedHours) * 100), 100)} />
+                            </div>
                         </div>
                     </div>
                 </div>

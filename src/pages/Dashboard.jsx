@@ -10,6 +10,8 @@ import AlertsPanel from "../components/dashboard/AlertsPanel.jsx";
 import Icon from "../components/ui/Icon.jsx";
 import { useData } from "../context/DataContext.jsx";
 import { alerts } from "../data/alerts.js";
+import { formatDemoMoney, getProjectFinancials } from "../utils/projectFinancials.js";
+import { toPersianDigits } from "../utils/jalali.js";
 
 export default function Dashboard() {
     const navigate = useNavigate();
@@ -23,6 +25,14 @@ export default function Dashboard() {
     const criticalAlerts = alerts.filter((a) => a.severity === "بالا").length;
     const riskProjects = projectRecords.filter((project) => ["At Risk", "Delayed"].includes(project.status)).sort((a, b) => a.health - b.health);
     const highPriorityOpenTasks = taskRecords.filter((task) => task.priority === "بالا" && task.status !== "Done").length;
+    const financialSummary = projectRecords.reduce((summary, project) => {
+        const financials = getProjectFinancials(project);
+        return {
+            planned: summary.planned + financials.plannedBudget,
+            actual: summary.actual + financials.actualCost,
+            remaining: summary.remaining + financials.remainingBudget,
+        };
+    }, { planned: 0, actual: 0, remaining: 0 });
 
     const now = new Date();
     const dateStr = now.toLocaleDateString("fa-IR", { weekday: "long", year: "numeric", month: "long", day: "numeric" });
@@ -114,8 +124,8 @@ export default function Dashboard() {
                         icon="chart"
                         tone="neutral"
                         label="بودجه و هزینه"
-                        value="نیازمند داده مالی"
-                        detail="KPI مالی ساختگی نمایش داده نمی‌شود"
+                        value={`${formatDemoMoney(financialSummary.actual)} مصرف‌شده`}
+                        detail={`${formatDemoMoney(financialSummary.remaining)} مانده · ${toPersianDigits(projectRecords.length)} پروژه`}
                         onClick={() => navigate("/analytics")}
                     />
                 </div>
