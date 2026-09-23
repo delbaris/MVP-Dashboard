@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import GlobalSearch from "./GlobalSearch.jsx";
 import { useApp } from "../../context/AppContext.jsx";
-import { useAuth } from "../../context/AuthContext.jsx";
 import Icon from "../ui/Icon.jsx";
 
 function useClock() {
@@ -13,10 +12,9 @@ function useClock() {
     return now;
 }
 
-export default function Topbar({ onOpenMobileSidebar }) {
+export default function Topbar({ onOpenMobileSidebar, onRequestLogout }) {
     const now = useClock();
     const { role, setRole, presentationMode, setPresentationMode } = useApp();
-    const { logout } = useAuth();
 
     const dateStr = new Intl.DateTimeFormat("fa-IR-u-ca-persian", { year: "numeric", month: "long", day: "numeric" }).format(now);
     const weekday = new Intl.DateTimeFormat("fa-IR-u-ca-persian", { weekday: "long" }).format(now);
@@ -32,11 +30,11 @@ export default function Topbar({ onOpenMobileSidebar }) {
                     <span className="faint">{weekday}، {dateStr}</span>
                 </div>
                 <select className="role-select" value={role} onChange={(e) => setRole(e.target.value)} title="نقش کاربری (مفهومی)">
-                    <option value="executive">Executive</option>
-                    <option value="hr">HR</option>
-                    <option value="pm">Project Manager</option>
-                    <option value="lead">Team Lead</option>
-                    <option value="employee">Employee</option>
+                    <option value="executive">مدیر ارشد</option>
+                    <option value="hr">منابع انسانی</option>
+                    <option value="pm">مدیر پروژه</option>
+                    <option value="lead">سرپرست تیم</option>
+                    <option value="employee">کارمند</option>
                 </select>
                 <button
                     className={`btn btn-sm ${presentationMode ? "btn-primary" : ""}`}
@@ -45,7 +43,7 @@ export default function Topbar({ onOpenMobileSidebar }) {
                 >
                     <Icon name="presentation" size={16} /> {presentationMode ? "خروج از ارائه" : "حالت ارائه"}
                 </button>
-                <button className="btn btn-sm btn-ghost topbar-logout" onClick={logout} title="خروج از حساب"><Icon name="logout" size={16} /> خروج</button>
+                <button className="btn btn-sm btn-ghost topbar-logout" onClick={onRequestLogout} title="خروج از حساب"><Icon name="logout" size={16} /> خروج</button>
             </div>
         </header>
     );

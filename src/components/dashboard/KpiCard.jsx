@@ -9,7 +9,7 @@ export default function KpiCard({ icon, label, value, trend, trendTone = "flat",
                 <span className="kpi-icon">{icon}</span>
                 {trend && <span className={trendClass}>{trend}</span>}
             </div>
-            <div className="kpi-value">{value}</div>
+            <div className="kpi-value">{typeof value === "number" ? value.toLocaleString("fa-IR") : value}</div>
             <div className="kpi-label">{label}</div>
             {note && <div className="kpi-note faint">{note}</div>}
         </div>

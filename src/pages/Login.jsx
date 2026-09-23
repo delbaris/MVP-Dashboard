@@ -36,7 +36,7 @@ export default function Login() {
                 </div>
                 <div className="login-heading">
                     <p className="login-kicker">فضای سازمانی امن</p>
-                    <h1>ورود به مرکز فرماندهی</h1>
+                    <h1>ورود به داشبورد سازمان</h1>
                     <p className="login-subtitle">برای مشاهده وضعیت کارکنان، پروژه‌ها و جریان عملیات وارد شوید.</p>
                 </div>
                 <form onSubmit={handleSubmit} className="login-form">
@@ -47,6 +47,7 @@ export default function Login() {
                 </form>
                 <div className="login-demo-hint"><strong>نسخه نمایشی محلی</strong><span>admin@robinparham.local · 123456</span></div>
                 <p className="login-security-note">این محیط برای ارائه Prototype آماده شده و احراز هویت نهایی در اتصال به Backend جایگزین خواهد شد.</p>
+                <p className="login-developer">توسعه‌دهنده: سعید دلبری</p>
             </section>
         </main>
     );

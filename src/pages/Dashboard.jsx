@@ -31,7 +31,7 @@ export default function Dashboard() {
         <div>
             <div className="page-header">
                 <div>
-                    <h1>مرکز فرماندهی عملیات کارکنان و پروژه‌ها</h1>
+                    <h1>داشبورد عملیات پرسنل و پروژه‌ها</h1>
                     <p className="page-subtitle">{dateStr} · نمای کلی وضعیت سازمان در یک نگاه</p>
                 </div>
                 <span className="proto-badge">🧪 Prototype / Concept</span>
