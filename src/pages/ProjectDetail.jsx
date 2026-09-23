@@ -6,6 +6,7 @@ import Avatar from "../components/ui/Avatar.jsx";
 import Badge from "../components/ui/Badge.jsx";
 import ProgressBar from "../components/ui/ProgressBar.jsx";
 import EmptyState from "../components/ui/EmptyState.jsx";
+import EntityModal from "../components/ui/EntityModal.jsx";
 import { projectStatusMap, taskStatusMap, priorityMap, severityMap } from "../utils/statusMaps.js";
 import { useData } from "../context/DataContext.jsx";
 
@@ -22,7 +23,9 @@ export default function ProjectDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [tab, setTab] = useState("overview");
-    const { projects, employees } = useData();
+    const [taskFormOpen, setTaskFormOpen] = useState(false);
+    const [editingTask, setEditingTask] = useState(null);
+    const { projects, employees, tasks: taskRecords, addRecord, updateRecord, deleteRecord } = useData();
     const project = projects.find((record) => record.id === id);
 
     if (!project) {
@@ -31,7 +34,7 @@ export default function ProjectDetail() {
 
     const manager = employees.find((employee) => employee.id === project.managerId);
     const members = project.memberIds.map((mid) => employees.find((employee) => employee.id === mid)).filter(Boolean);
-    const tasks = getTasksByProject(project.id);
+    const tasks = taskRecords.filter((task) => task.projectId === project.id);
     const activities = getActivitiesByProject(project.id);
     const st = projectStatusMap[project.status];
     const healthColor = project.health >= 80 ? "var(--color-success)" : project.health >= 60 ? "var(--color-warning)" : "var(--color-danger)";
@@ -74,6 +77,10 @@ export default function ProjectDetail() {
 
             {tab === "overview" && (
                 <div className="card card-pad">
+                    <div className="card-title-row">
+                        <h3>Taskهای پروژه</h3>
+                        <button type="button" className="btn btn-sm btn-primary" onClick={() => { setEditingTask(null); setTaskFormOpen(true); }}>افزودن Task</button>
+                    </div>
                     <div className="section-title">توضیحات پروژه</div>
                     <p className="muted" style={{ fontSize: 13, marginBottom: 16 }}>{project.description}</p>
                     <div className="stat-mini-grid">
@@ -96,6 +103,25 @@ export default function ProjectDetail() {
                     </div>
                 </div>
             )}
+
+            <EntityModal
+                open={taskFormOpen}
+                onClose={() => { setTaskFormOpen(false); setEditingTask(null); }}
+                title={editingTask ? "ویرایش Task" : "افزودن Task"}
+                fields={[
+                    { name: "title", label: "عنوان Task", required: true },
+                    { name: "assigneeId", label: "مسئول", type: "select", required: true, options: employees.map((employee) => ({ value: employee.id, label: employee.name })) },
+                    { name: "status", label: "وضعیت", type: "select", required: true, options: [{ value: "Todo", label: "برای انجام" }, { value: "In Progress", label: "در حال انجام" }, { value: "Review", label: "در بررسی" }, { value: "Blocked", label: "مسدود" }, { value: "Done", label: "تکمیل شده" }] },
+                    { name: "priority", label: "اولویت", type: "select", required: true, options: [{ value: "بالا", label: "بالا" }, { value: "متوسط", label: "متوسط" }, { value: "کم", label: "کم" }] },
+                    { name: "dueDate", label: "موعد تحویل", type: "date", required: true },
+                ]}
+                initialValues={editingTask || { assigneeId: employees[0]?.id || "", status: "Todo", priority: "متوسط", progress: 0 }}
+                onSubmit={(values) => {
+                    if (editingTask) updateRecord("tasks", editingTask.id, values);
+                    else addRecord("tasks", { ...values, id: `task-demo-${Date.now()}`, projectId: project.id, progress: 0, createdAt: "امروز", lastUpdate: "امروز" });
+                    setEditingTask(null);
+                }}
+            />
 
             {tab === "team" && (
                 <div className="card">
@@ -171,11 +197,12 @@ export default function ProjectDetail() {
                                         <th>وضعیت</th>
                                         <th>پیشرفت</th>
                                         <th>مهلت</th>
+                                        <th>عملیات</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {tasks.map((t) => {
-                                        const assignee = getEmployeeById(t.assigneeId);
+                                        const assignee = employees.find((employee) => employee.id === t.assigneeId);
                                         const ts = taskStatusMap[t.status];
                                         const pr = priorityMap[t.priority];
                                         return (
@@ -186,6 +213,12 @@ export default function ProjectDetail() {
                                                 <td><Badge className={ts.badge}>{ts.label}</Badge></td>
                                                 <td style={{ minWidth: 120 }}><ProgressBar value={t.progress} /></td>
                                                 <td>{t.dueDate}</td>
+                                                <td>
+                                                    <div className="table-actions" onClick={(event) => event.stopPropagation()}>
+                                                        <button type="button" className="btn btn-sm btn-ghost" onClick={() => { setEditingTask(t); setTaskFormOpen(true); }}>ویرایش</button>
+                                                        <button type="button" className="btn btn-sm btn-danger" onClick={() => { if (window.confirm("این Task حذف شود؟")) deleteRecord("tasks", t.id); }}>حذف</button>
+                                                    </div>
+                                                </td>
                                             </tr>
                                         );
                                     })}
@@ -203,7 +236,7 @@ export default function ProjectDetail() {
                     ) : (
                         <div className="timeline">
                             {activities.map((act) => {
-                                const emp = getEmployeeById(act.employeeId);
+                                const emp = employees.find((employee) => employee.id === act.employeeId);
                                 return (
                                     <div key={act.id} className="timeline-item" onClick={() => emp && navigate(`/employees/${emp.id}`)}>
                                         <div className="timeline-time">{act.time}</div>
