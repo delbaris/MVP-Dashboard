@@ -1,8 +1,9 @@
-import React, { createContext, useCallback, useContext, useState } from "react";
+import React, { createContext, useCallback, useContext, useEffect, useState } from "react";
 
 const AuthContext = createContext(null);
 const STORAGE_KEY = "mvp-dashboard-auth";
 const DEMO_USER = { name: "مدیر سامانه", email: "admin@robinparham.local", role: "مدیر ارشد" };
+const INACTIVITY_TIMEOUT = 15 * 60 * 1000;
 
 function getStoredUser() {
     try {
@@ -29,6 +30,22 @@ export function AuthProvider({ children }) {
         window.localStorage.removeItem(STORAGE_KEY);
         setUser(null);
     }, []);
+
+    useEffect(() => {
+        if (!user) return undefined;
+        let timeoutId;
+        const refreshTimeout = () => {
+            window.clearTimeout(timeoutId);
+            timeoutId = window.setTimeout(logout, INACTIVITY_TIMEOUT);
+        };
+        const activityEvents = ["pointerdown", "keydown", "scroll", "touchstart"];
+        activityEvents.forEach((eventName) => window.addEventListener(eventName, refreshTimeout, { passive: true }));
+        refreshTimeout();
+        return () => {
+            window.clearTimeout(timeoutId);
+            activityEvents.forEach((eventName) => window.removeEventListener(eventName, refreshTimeout));
+        };
+    }, [user, logout]);
 
     return <AuthContext.Provider value={{ user, login, logout }}>{children}</AuthContext.Provider>;
 }
