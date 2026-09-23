@@ -7,6 +7,9 @@ import Avatar from "../components/ui/Avatar.jsx";
 import Badge from "../components/ui/Badge.jsx";
 import EmptyState from "../components/ui/EmptyState.jsx";
 import { employeeStatusMap } from "../utils/statusMaps.js";
+import EntityModal from "../components/ui/EntityModal.jsx";
+import Icon from "../components/ui/Icon.jsx";
+import { useData } from "../context/DataContext.jsx";
 
 export default function Employees() {
     const navigate = useNavigate();
@@ -14,9 +17,11 @@ export default function Employees() {
     const [query, setQuery] = useState("");
     const [status, setStatus] = useState(params.get("status") || "all");
     const [team, setTeam] = useState(params.get("team") || "all");
+    const [formOpen, setFormOpen] = useState(false);
+    const { employees: employeeRecords, addRecord } = useData();
 
     const filtered = useMemo(() => {
-        return employees.filter((e) => {
+        return employeeRecords.filter((e) => {
             if (status !== "all" && e.status !== status) return false;
             if (team !== "all" && e.teamId !== team) return false;
             if (query.trim()) {
@@ -25,16 +30,25 @@ export default function Employees() {
             }
             return true;
         });
-    }, [query, status, team]);
+    }, [employeeRecords, query, status, team]);
+
+    const employeeFields = [
+        { name: "name", label: "نام و نام خانوادگی", required: true, placeholder: "مثلاً مریم احمدی" },
+        { name: "email", label: "ایمیل سازمانی", type: "email", required: true },
+        { name: "role", label: "سمت", required: true },
+        { name: "location", label: "محل استقرار", required: true, placeholder: "تهران / دبی" },
+        { name: "status", label: "وضعیت", type: "select", required: true, options: [{ value: "Active", label: "فعال" }, { value: "Onboarding", label: "در حال ورود" }, { value: "Available", label: "آماده تخصیص" }] },
+        { name: "hireDate", label: "تاریخ شروع", required: true, placeholder: "1405-01-01" },
+    ];
 
     return (
         <div>
             <div className="page-header">
                 <div>
-                    <h1>کارکنان</h1>
+                    <h1>پرسنل</h1>
                     <p className="page-subtitle">فهرست کارکنان فعال سازمان و وضعیت اشتغال آن‌ها</p>
                 </div>
-                <span className="proto-badge">🧪 Prototype / Concept</span>
+                <button className="btn btn-primary" onClick={() => setFormOpen(true)}><Icon name="users" size={16} /> ثبت پرسنل</button>
             </div>
 
             <div className="filters-bar">
@@ -57,7 +71,7 @@ export default function Employees() {
                         <option key={t.id} value={t.id}>{t.nameFa}</option>
                     ))}
                 </select>
-                <span className="result-count">{filtered.length} نفر از {employees.length} کارمند</span>
+                <span className="result-count">{filtered.length} نفر از {employeeRecords.length} نفر</span>
             </div>
 
             <div className="card">
@@ -106,6 +120,15 @@ export default function Employees() {
                     </div>
                 )}
             </div>
+            <EntityModal
+                open={formOpen}
+                onClose={() => setFormOpen(false)}
+                title="ثبت پرسنل جدید"
+                description="اطلاعات پایه را وارد کنید؛ جزئیات تخصیص پروژه و مهارت‌ها بعداً از پروفایل فرد تکمیل می‌شود."
+                fields={employeeFields}
+                initialValues={{ status: "Active" }}
+                onSubmit={(values) => addRecord("employees", { ...values, id: `emp-demo-${Date.now()}`, avatarColor: "#3a6ea5", title: values.role, teamId: "team-management", managerId: "emp-01", phone: "", skills: [] })}
+            />
         </div>
     );
 }

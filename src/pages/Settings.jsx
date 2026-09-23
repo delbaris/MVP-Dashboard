@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useState } from "react";
 import { useApp } from "../context/AppContext.jsx";
 import { roles, auditTrail } from "../data/journey.js";
+import { useData } from "../context/DataContext.jsx";
 
 const INTEGRATIONS = [
     { name: "GitHub", status: "مفهومی" },
@@ -14,6 +15,11 @@ const INTEGRATIONS = [
 
 export default function Settings() {
     const { role, setRole, presentationMode, setPresentationMode, pushToast } = useApp();
+    const { resetDemoData } = useData();
+    const [provider, setProvider] = useState("OpenAI-compatible");
+    const [baseUrl, setBaseUrl] = useState("http://localhost:11434/v1");
+    const [model, setModel] = useState("local-model");
+    const [saved, setSaved] = useState(false);
 
     return (
         <div>
@@ -61,13 +67,33 @@ export default function Settings() {
                 </div>
 
                 <div className="card card-pad">
-                    <div className="section-title">یکپارچه‌سازی‌های آینده (Mock)</div>
+                    <div className="section-title">اتصال دستیار هوشمند (تنظیمات دمو)</div>
+                    <p className="muted integration-description">اطلاعات اتصال فقط برای آماده‌سازی UI است و در این نسخه به هیچ سرویس بیرونی ارسال نمی‌شود.</p>
+                    <div className="integration-form-grid">
+                        <label className="form-field"><span>ارائه‌دهنده</span><select value={provider} onChange={(e) => setProvider(e.target.value)}><option>OpenAI-compatible</option><option>سرویس داخلی سازمان</option><option>Ollama محلی</option></select></label>
+                        <label className="form-field"><span>نام مدل</span><input value={model} onChange={(e) => setModel(e.target.value)} /></label>
+                        <label className="form-field integration-url"><span>آدرس API</span><input dir="ltr" value={baseUrl} onChange={(e) => setBaseUrl(e.target.value)} /></label>
+                        <label className="form-field integration-url"><span>کلید API (اختیاری در دمو)</span><input dir="ltr" type="password" placeholder="در این نسخه ذخیره نمی‌شود" /></label>
+                    </div>
+                    <button className="btn btn-primary" onClick={() => { setSaved(true); pushToast("تنظیمات اتصال دستیار در وضعیت دمو ثبت شد"); }} type="button">{saved ? "تنظیمات ثبت شد" : "ثبت تنظیمات اتصال"}</button>
+                </div>
+
+                <div className="card card-pad">
+                    <div className="section-title">یکپارچه‌سازی‌های آینده</div>
                     <div className="hstack" style={{ flexWrap: "wrap", gap: 10 }}>
                         {INTEGRATIONS.map((i) => (
                             <span key={i.name} className="tag" style={{ fontSize: 12.5, padding: "8px 14px" }}>
                                 {i.name} · {i.status}
                             </span>
                         ))}
+                    </div>
+
+                    <div className="card card-pad">
+                        <div className="section-title">داده‌های نمایشی</div>
+                        <p className="muted integration-description">اطلاعات ثبت‌شده در این دموی مرورگر در localStorage نگهداری می‌شود و فقط برای تست جریان ورود اطلاعات است.</p>
+                        <button className="btn btn-secondary" type="button" onClick={() => { resetDemoData(); pushToast("داده‌های دمو به وضعیت اولیه بازگردانی شد"); }}>
+                            بازنشانی داده‌های دمو
+                        </button>
                     </div>
                 </div>
 

@@ -7,20 +7,25 @@ import Badge from "../components/ui/Badge.jsx";
 import ProgressBar from "../components/ui/ProgressBar.jsx";
 import EmptyState from "../components/ui/EmptyState.jsx";
 import { projectStatusMap } from "../utils/statusMaps.js";
+import EntityModal from "../components/ui/EntityModal.jsx";
+import Icon from "../components/ui/Icon.jsx";
+import { useData } from "../context/DataContext.jsx";
 
 export default function Projects() {
     const navigate = useNavigate();
     const [query, setQuery] = useState("");
     const [status, setStatus] = useState("all");
     const [manager, setManager] = useState("all");
+    const [formOpen, setFormOpen] = useState(false);
+    const { projects: projectRecords, addRecord } = useData();
 
     const managers = useMemo(() => {
-        const ids = [...new Set(projects.map((p) => p.managerId))];
+        const ids = [...new Set(projectRecords.map((p) => p.managerId))];
         return ids.map((id) => getEmployeeById(id)).filter(Boolean);
-    }, []);
+    }, [projectRecords]);
 
     const filtered = useMemo(() => {
-        return projects.filter((p) => {
+        return projectRecords.filter((p) => {
             if (status !== "all" && p.status !== status) return false;
             if (manager !== "all" && p.managerId !== manager) return false;
             if (query.trim() && !p.name.toLowerCase().includes(query.trim().toLowerCase()) && !p.client.toLowerCase().includes(query.trim().toLowerCase())) {
@@ -28,7 +33,7 @@ export default function Projects() {
             }
             return true;
         });
-    }, [query, status, manager]);
+    }, [projectRecords, query, status, manager]);
 
     return (
         <div>
@@ -37,7 +42,7 @@ export default function Projects() {
                     <h1>پروژه‌ها</h1>
                     <p className="page-subtitle">فهرست پروژه‌های سازمان و وضعیت پیشرفت آن‌ها</p>
                 </div>
-                <span className="proto-badge">🧪 Prototype / Concept</span>
+                <button className="btn btn-primary" onClick={() => setFormOpen(true)}><Icon name="folder" size={16} /> ثبت پروژه</button>
             </div>
 
             <div className="filters-bar">
@@ -55,7 +60,7 @@ export default function Projects() {
                         <option key={m.id} value={m.id}>{m.name}</option>
                     ))}
                 </select>
-                <span className="result-count">{filtered.length} از {projects.length} پروژه</span>
+                <span className="result-count">{filtered.length} از {projectRecords.length} پروژه</span>
             </div>
 
             {filtered.length === 0 ? (
@@ -95,6 +100,23 @@ export default function Projects() {
                     })}
                 </div>
             )}
+            <EntityModal
+                open={formOpen}
+                onClose={() => setFormOpen(false)}
+                title="ثبت پروژه جدید"
+                description="اطلاعات پایه پروژه را ثبت کنید؛ اعضا، WBS، کارها و ریسک‌ها از صفحه جزئیات تکمیل می‌شوند."
+                fields={[
+                    { name: "name", label: "نام پروژه", required: true },
+                    { name: "client", label: "مشتری / واحد درخواست‌کننده", required: true },
+                    { name: "managerId", label: "مدیر پروژه", type: "select", required: true, options: managers.map((m) => ({ value: m.id, label: m.name })) },
+                    { name: "status", label: "وضعیت", type: "select", required: true, options: [{ value: "On Track", label: "طبق برنامه" }, { value: "At Risk", label: "در معرض ریسک" }, { value: "Delayed", label: "تاخیر" }] },
+                    { name: "startDate", label: "تاریخ شروع", required: true },
+                    { name: "deadline", label: "موعد تحویل", required: true },
+                    { name: "description", label: "شرح پروژه", type: "textarea" },
+                ]}
+                initialValues={{ status: "On Track", managerId: managers[0]?.id || "" }}
+                onSubmit={(values) => addRecord("projects", { ...values, id: `proj-demo-${Date.now()}`, health: 100, progress: 0, memberIds: [], milestones: [], risks: [] })}
+            />
         </div>
     );
 }
