@@ -19,6 +19,7 @@ const PATHS = {
     trash: <><path d="M4 7h16M10 11v6M14 11v6M6 7l1 14h10l1-14M9 7V4h6v3" /></>,
     check: <path d="m5 12 4 4L19 6" />,
     close: <><path d="m6 6 12 12M18 6 6 18" /></>,
+    message: <><path d="M20 11.5a7.5 7.5 0 0 1-7.5 7.5H7l-4 2 1.5-4A7.5 7.5 0 1 1 20 11.5Z" /></>,
     chevronRight: <path d="m9 18 6-6-6-6" />,
     chevronLeft: <path d="m15 18-6-6 6-6" />,
 };
