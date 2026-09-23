@@ -1,0 +1,98 @@
+// Alert entity - هشدارهای مدیریتی مرتبط با پروژه، کارمند یا تیم
+
+export const alerts = [
+    {
+        id: "alert-01",
+        severity: "بالا",
+        title: "پروژه CRM v2 از برنامه عقب است",
+        description: "پیشرفت واقعی پروژه حدود 8٪ کمتر از برنامه زمانی مصوب است.",
+        type: "project",
+        relatedId: "proj-01",
+        date: "1403-06-16",
+    },
+    {
+        id: "alert-02",
+        severity: "بالا",
+        title: "3 Task از موعد تحویل عبور کرده‌اند",
+        description: "Taskهای مرتبط با ماژول فروش و مرخصی از Deadline گذشته‌اند.",
+        type: "task",
+        relatedId: "task-02",
+        date: "1403-06-16",
+    },
+    {
+        id: "alert-03",
+        severity: "متوسط",
+        title: "2 نیروی جدید هنوز Onboarding را کامل نکرده‌اند",
+        description: "فرآیند آموزش اولیه دو کارمند جدید ناقص باقی مانده است.",
+        type: "employee",
+        relatedId: "emp-07",
+        date: "1403-06-15",
+    },
+    {
+        id: "alert-04",
+        severity: "متوسط",
+        title: "تیم Backend در آستانه Overload است",
+        description: "بار کاری تخصیص‌یافته به تیم Backend نزدیک به ظرفیت کامل است.",
+        type: "team",
+        relatedId: "team-backend",
+        date: "1403-06-15",
+    },
+    {
+        id: "alert-05",
+        severity: "بالا",
+        title: "سامانه منابع انسانی داخلی با تاخیر قابل توجه مواجه است",
+        description: "پیشرفت پروژه تنها 32٪ و از موعد تحویل عقب‌تر است.",
+        type: "project",
+        relatedId: "proj-03",
+        date: "1403-06-14",
+    },
+    {
+        id: "alert-06",
+        severity: "کم",
+        title: "کاندیدای پیشنهاد همکاری در انتظار تایید نهایی",
+        description: "الناز کریمیان برای نقش Frontend Developer در مرحله پیشنهاد قرار دارد.",
+        type: "candidate",
+        relatedId: "cand-02",
+        date: "1403-06-14",
+    },
+    {
+        id: "alert-07",
+        severity: "متوسط",
+        title: "Task مسدود شده در ماژول مرخصی",
+        description: "پیاده‌سازی فرم درخواست مرخصی به دلیل وابستگی فنی متوقف شده است.",
+        type: "task",
+        relatedId: "task-17",
+        date: "1403-06-13",
+    },
+    {
+        id: "alert-08",
+        severity: "کم",
+        title: "بازبینی امنیتی API در حال انجام است",
+        description: "بازبینی امنیتی API‌های عمومی پروژه CRM هنوز به اتمام نرسیده است.",
+        type: "task",
+        relatedId: "task-35",
+        date: "1403-06-12",
+    },
+    {
+        id: "alert-09",
+        severity: "متوسط",
+        title: "هزینه زیرساخت ابری بالاتر از پیش‌بینی",
+        description: "هزینه ماهانه منابع ابری پروژه زیرساخت از سقف بودجه فراتر رفته است.",
+        type: "project",
+        relatedId: "proj-06",
+        date: "1403-06-11",
+    },
+    {
+        id: "alert-10",
+        severity: "کم",
+        title: "بازبینی عملکرد فصلی نزدیک است",
+        description: "بازبینی عملکرد فصلی برای 4 کارمند تیم Frontend در هفته آینده برنامه‌ریزی شده است.",
+        type: "team",
+        relatedId: "team-frontend",
+        date: "1403-06-10",
+    },
+];
+
+export function getAlertsBySeverity(severity) {
+    return alerts.filter((a) => a.severity === severity);
+}
