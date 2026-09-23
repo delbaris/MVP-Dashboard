@@ -9,6 +9,9 @@ import EmptyState from "../components/ui/EmptyState.jsx";
 import EntityModal from "../components/ui/EntityModal.jsx";
 import { projectStatusMap, taskStatusMap, priorityMap, severityMap } from "../utils/statusMaps.js";
 import { useData } from "../context/DataContext.jsx";
+import { useApp } from "../context/AppContext.jsx";
+import ConfirmDialog from "../components/ui/ConfirmDialog.jsx";
+import Icon from "../components/ui/Icon.jsx";
 
 const TABS = [
     { key: "overview", label: "نمای کلی" },
@@ -25,7 +28,9 @@ export default function ProjectDetail() {
     const [tab, setTab] = useState("overview");
     const [taskFormOpen, setTaskFormOpen] = useState(false);
     const [editingTask, setEditingTask] = useState(null);
+    const [deletingTask, setDeletingTask] = useState(null);
     const { projects, employees, tasks: taskRecords, addRecord, updateRecord, deleteRecord } = useData();
+    const { pushToast } = useApp();
     const project = projects.find((record) => record.id === id);
 
     if (!project) {
@@ -117,10 +122,22 @@ export default function ProjectDetail() {
                 ]}
                 initialValues={editingTask || { assigneeId: employees[0]?.id || "", status: "Todo", priority: "متوسط", progress: 0 }}
                 onSubmit={(values) => {
-                    if (editingTask) updateRecord("tasks", editingTask.id, values);
-                    else addRecord("tasks", { ...values, id: `task-demo-${Date.now()}`, projectId: project.id, progress: 0, createdAt: "امروز", lastUpdate: "امروز" });
+                    if (editingTask) {
+                        updateRecord("tasks", editingTask.id, values);
+                        pushToast("Task با موفقیت ویرایش شد", "success");
+                    } else {
+                        addRecord("tasks", { ...values, id: `task-demo-${Date.now()}`, projectId: project.id, progress: 0, createdAt: "امروز", lastUpdate: "امروز" });
+                        pushToast("Task جدید با موفقیت ثبت شد", "success");
+                    }
                     setEditingTask(null);
                 }}
+            />
+            <ConfirmDialog
+                open={!!deletingTask}
+                onClose={() => setDeletingTask(null)}
+                title="حذف Task"
+                description={`آیا از حذف «${deletingTask?.title || ""}» مطمئن هستید؟`}
+                onConfirm={() => { deleteRecord("tasks", deletingTask.id); setDeletingTask(null); pushToast("Task با موفقیت حذف شد", "success"); }}
             />
 
             {tab === "team" && (
@@ -215,8 +232,8 @@ export default function ProjectDetail() {
                                                 <td>{t.dueDate}</td>
                                                 <td>
                                                     <div className="table-actions" onClick={(event) => event.stopPropagation()}>
-                                                        <button type="button" className="btn btn-sm btn-ghost" onClick={() => { setEditingTask(t); setTaskFormOpen(true); }}>ویرایش</button>
-                                                        <button type="button" className="btn btn-sm btn-danger" onClick={() => { if (window.confirm("این Task حذف شود؟")) deleteRecord("tasks", t.id); }}>حذف</button>
+                                                        <button type="button" className="btn btn-sm btn-ghost" onClick={() => { setEditingTask(t); setTaskFormOpen(true); }}><Icon name="edit" size={14} /> ویرایش</button>
+                                                        <button type="button" className="btn btn-sm btn-danger" onClick={() => setDeletingTask(t)}><Icon name="trash" size={14} /> حذف</button>
                                                     </div>
                                                 </td>
                                             </tr>

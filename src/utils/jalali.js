@@ -5,6 +5,18 @@ const monthNames = [
 
 export const jalaliMonthNames = monthNames;
 export const jalaliWeekdays = ["شنبه", "یکشنبه", "دوشنبه", "سه‌شنبه", "چهارشنبه", "پنجشنبه", "جمعه"];
+const persianDigits = "۰۱۲۳۴۵۶۷۸۹";
+const arabicDigits = "٠١٢٣٤٥٦٧٨٩";
+
+export function toPersianDigits(value) {
+    return String(value).replace(/\d/g, (digit) => persianDigits[digit]);
+}
+
+export function toLatinDigits(value) {
+    return String(value)
+        .replace(/[۰-۹]/g, (digit) => persianDigits.indexOf(digit))
+        .replace(/[٠-٩]/g, (digit) => arabicDigits.indexOf(digit));
+}
 
 function div(a, b) {
     return Math.floor(a / b);
