@@ -25,9 +25,9 @@ export default function Topbar({ onOpenMobileSidebar, onRequestLogout }) {
             <button className="topbar-mobile-toggle" onClick={onOpenMobileSidebar} aria-label="باز کردن منو"><Icon name="menu" /></button>
             <GlobalSearch />
             <div className="topbar-right">
-                <div className="topbar-clock">
+                <div className="topbar-clock" aria-label={`زمان فعلی: ${weekday}، ${dateStr}، ${timeStr}`}>
                     <span className="topbar-clock-time">{timeStr}</span>
-                    <span className="faint">{weekday}، {dateStr}</span>
+                    <span className="faint topbar-clock-date">{weekday}، {dateStr}</span>
                 </div>
                 <select className="role-select" value={role} onChange={(e) => setRole(e.target.value)} title="نقش کاربری (مفهومی)">
                     <option value="executive">مدیر ارشد</option>
@@ -41,9 +41,9 @@ export default function Topbar({ onOpenMobileSidebar, onRequestLogout }) {
                     onClick={() => setPresentationMode((v) => !v)}
                     title="حالت ارائه برای نمایش به مدیران"
                 >
-                    <Icon name="presentation" size={16} /> {presentationMode ? "خروج از ارائه" : "حالت ارائه"}
+                    <Icon name="presentation" size={16} /> <span className="topbar-action-label">{presentationMode ? "خروج از ارائه" : "حالت ارائه"}</span>
                 </button>
-                <button className="btn btn-sm btn-ghost topbar-logout" onClick={onRequestLogout} title="خروج از حساب"><Icon name="logout" size={16} /> خروج</button>
+                <button className="btn btn-sm btn-ghost topbar-logout" onClick={onRequestLogout} title="خروج از حساب"><Icon name="logout" size={16} /> <span className="topbar-action-label">خروج</span></button>
             </div>
         </header>
     );

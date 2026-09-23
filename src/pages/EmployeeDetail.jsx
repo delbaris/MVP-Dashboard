@@ -16,6 +16,8 @@ import ProgressBar from "../components/ui/ProgressBar.jsx";
 import EmptyState from "../components/ui/EmptyState.jsx";
 import { employeeStatusMap, taskStatusMap, priorityMap } from "../utils/statusMaps.js";
 import { useData } from "../context/DataContext.jsx";
+import Breadcrumbs from "../components/ui/Breadcrumbs.jsx";
+import { toPersianDigits } from "../utils/jalali.js";
 
 const TABS = [
     { key: "overview", label: "نمای کلی" },
@@ -60,6 +62,7 @@ export default function EmployeeDetail() {
 
     return (
         <div>
+            <Breadcrumbs items={[{ label: "کارکنان", to: "/employees" }, { label: employee.name }]} />
             <div className="back-link" onClick={() => navigate("/employees")}>→ بازگشت به فهرست کارکنان</div>
 
             <div className="detail-header card card-pad">
@@ -97,19 +100,19 @@ export default function EmployeeDetail() {
                         <div className="section-title">خلاصه وضعیت</div>
                         <div className="stat-mini-grid">
                             <div className="stat-mini">
-                                <div className="stat-mini-value">{employeeProjects.length}</div>
+                                <div className="stat-mini-value">{toPersianDigits(employeeProjects.length)}</div>
                                 <div className="stat-mini-label">پروژه فعال</div>
                             </div>
                             <div className="stat-mini">
-                                <div className="stat-mini-value">{openTasks.length}</div>
+                                <div className="stat-mini-value">{toPersianDigits(openTasks.length)}</div>
                                 <div className="stat-mini-label">Taskهای باز</div>
                             </div>
                             <div className="stat-mini">
-                                <div className="stat-mini-value">{tasks.length}</div>
+                                <div className="stat-mini-value">{toPersianDigits(tasks.length)}</div>
                                 <div className="stat-mini-label">کل Taskها</div>
                             </div>
                             <div className="stat-mini">
-                                <div className="stat-mini-value">{activities.length}</div>
+                                <div className="stat-mini-value">{toPersianDigits(activities.length)}</div>
                                 <div className="stat-mini-label">فعالیت ثبت‌شده</div>
                             </div>
                         </div>

@@ -8,6 +8,7 @@ import EmptyState from "../components/ui/EmptyState.jsx";
 import { employeeStatusMap } from "../utils/statusMaps.js";
 import EntityModal from "../components/ui/EntityModal.jsx";
 import Icon from "../components/ui/Icon.jsx";
+import { toPersianDigits } from "../utils/jalali.js";
 import ConfirmDialog from "../components/ui/ConfirmDialog.jsx";
 import { useApp } from "../context/AppContext.jsx";
 import { useData } from "../context/DataContext.jsx";
@@ -75,7 +76,7 @@ export default function Employees() {
                         <option key={t.id} value={t.id}>{t.nameFa}</option>
                     ))}
                 </select>
-                <span className="result-count">{filtered.length} نفر از {employeeRecords.length} نفر</span>
+                <span className="result-count">{toPersianDigits(filtered.length)} نفر از {toPersianDigits(employeeRecords.length)} نفر</span>
             </div>
 
             <div className="card">
@@ -115,7 +116,7 @@ export default function Employees() {
                                             <td>{teamInfo?.nameFa || "—"}</td>
                                             <td>{manager ? manager.name : "—"}</td>
                                             <td><Badge className={st.badge}>{st.label}</Badge></td>
-                                            <td>{openTasks}</td>
+                                            <td>{toPersianDigits(openTasks)}</td>
                                             <td>{e.location}</td>
                                             <td>
                                                 <div className="table-actions">

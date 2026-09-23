@@ -7,6 +7,7 @@ import EmptyState from "../components/ui/EmptyState.jsx";
 import { projectStatusMap } from "../utils/statusMaps.js";
 import EntityModal from "../components/ui/EntityModal.jsx";
 import Icon from "../components/ui/Icon.jsx";
+import { toPersianDigits } from "../utils/jalali.js";
 import ConfirmDialog from "../components/ui/ConfirmDialog.jsx";
 import { useApp } from "../context/AppContext.jsx";
 import { useData } from "../context/DataContext.jsx";
@@ -63,7 +64,7 @@ export default function Projects() {
                         <option key={m.id} value={m.id}>{m.name}</option>
                     ))}
                 </select>
-                <span className="result-count">{filtered.length} از {projectRecords.length} پروژه</span>
+                <span className="result-count">{toPersianDigits(filtered.length)} از {toPersianDigits(projectRecords.length)} پروژه</span>
             </div>
 
             {filtered.length === 0 ? (
@@ -86,9 +87,9 @@ export default function Projects() {
                                 </div>
                                 <ProgressBar value={p.progress} />
                                 <div className="project-card-footer">
-                                    <span>پیشرفت {p.progress}٪</span>
-                                    <span>{p.memberIds.length} عضو</span>
-                                    <span>{openTasks} Task باز</span>
+                                    <span>پیشرفت {toPersianDigits(p.progress)}٪</span>
+                                    <span>{toPersianDigits(p.memberIds.length)} عضو</span>
+                                    <span>{toPersianDigits(openTasks)} Task باز</span>
                                 </div>
                                 <div className="project-card-footer">
                                     <span>مدیر: {mgr?.name}</span>
@@ -96,7 +97,7 @@ export default function Projects() {
                                 </div>
                                 <div className="project-card-footer">
                                     <span>سلامت پروژه</span>
-                                    <span className="health-pill" style={{ color: healthColor }}>{p.health}/100</span>
+                                    <span className="health-pill" style={{ color: healthColor }}>{toPersianDigits(p.health)}/۱۰۰</span>
                                 </div>
                                 <div className="table-actions" onClick={(event) => event.stopPropagation()}>
                                     <button type="button" className="btn btn-sm btn-ghost" onClick={() => { setEditingProject(p); setFormOpen(true); }}><Icon name="edit" size={14} /> ویرایش</button>
