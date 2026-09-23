@@ -7,6 +7,7 @@ import WorkloadOverview from "../components/dashboard/WorkloadOverview.jsx";
 import ProjectMiniList from "../components/dashboard/ProjectMiniList.jsx";
 import ActivityFeed from "../components/dashboard/ActivityFeed.jsx";
 import AlertsPanel from "../components/dashboard/AlertsPanel.jsx";
+import Icon from "../components/ui/Icon.jsx";
 import { employees } from "../data/employees.js";
 import { candidates } from "../data/candidates.js";
 import { projects } from "../data/projects.js";
@@ -76,6 +77,42 @@ export default function Dashboard() {
                 <KpiCard icon="🚨" label="هشدارهای مهم" value={criticalAlerts} trend="بالا" trendTone="down" note="نیازمند بررسی فوری" onClick={() => navigate("/alerts")} />
             </div>
 
+            <section className="executive-focus card card-pad" aria-label="اولویت‌های مدیریتی">
+                <div className="card-title-row">
+                    <div>
+                        <h3>تمرکز مدیریتی</h3>
+                        <p className="muted executive-focus-subtitle">سه نقطه ورود برای تصمیم‌گیری سریع و drill-down</p>
+                    </div>
+                    <span className="proto-badge">به‌روزرسانی زنده</span>
+                </div>
+                <div className="executive-focus-grid">
+                    <ExecutiveFocus
+                        icon="alert"
+                        tone="danger"
+                        label="نیازمند توجه فوری"
+                        value={`${overdueTasks} تسک دارای تأخیر`}
+                        detail={`${criticalAlerts} هشدار با اولویت بالا`}
+                        onClick={() => navigate("/alerts")}
+                    />
+                    <ExecutiveFocus
+                        icon="folder"
+                        tone="info"
+                        label="ظرفیت و منابع"
+                        value={`${employees.filter((e) => e.status === "Available").length} نفر آماده تخصیص`}
+                        detail={`${activeProjects} پروژه فعال`}
+                        onClick={() => navigate("/projects")}
+                    />
+                    <ExecutiveFocus
+                        icon="users"
+                        tone="success"
+                        label="چرخه نیروی انسانی"
+                        value={`${activeRecruitment} فرآیند استخدامی`}
+                        detail={`${employees.filter((e) => e.status === "Onboarding").length} نفر در آنبوردینگ`}
+                        onClick={() => navigate("/recruitment")}
+                    />
+                </div>
+            </section>
+
             <div className="dashboard-mid-grid">
                 <RecruitmentFunnelWidget />
                 <WorkloadOverview />
@@ -96,10 +133,24 @@ export default function Dashboard() {
 function MiniStat({ label, value, note, tone, onClick }) {
     const toneClass = tone === "up" ? "kpi-trend-up" : tone === "down" ? "kpi-trend-down" : "kpi-trend-flat";
     return (
-        <div onClick={onClick} style={{ cursor: "pointer" }}>
+        <button className="mini-stat-button" onClick={onClick}>
             <div style={{ fontSize: 22, fontWeight: 800, color: "var(--color-navy-900)" }}>{value}</div>
             <div className="muted" style={{ fontSize: 12 }}>{label}</div>
             <div className={toneClass} style={{ fontSize: 11, marginTop: 2 }}>{note}</div>
-        </div>
+        </button>
+    );
+}
+
+function ExecutiveFocus({ icon, tone, label, value, detail, onClick }) {
+    return (
+        <button className={`executive-focus-item executive-focus-${tone}`} onClick={onClick}>
+            <span className="executive-focus-icon"><Icon name={icon} size={18} /></span>
+            <span className="executive-focus-copy">
+                <strong>{label}</strong>
+                <span>{value}</span>
+                <small>{detail}</small>
+            </span>
+            <Icon name="chevronLeft" size={16} />
+        </button>
     );
 }

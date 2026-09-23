@@ -843,30 +843,53 @@ table.data-table tbody tr:last-child td {
 }
 
 .login-card {
-    width: min(430px, 100%);
-    padding: 36px;
+    width: min(470px, 100%);
+    padding: 34px;
     text-align: right;
     box-shadow: var(--shadow-lg);
 }
 
-.login-brand-mark {
+.login-brand {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding-bottom: 22px;
+    border-bottom: 1px solid var(--color-border);
+}
+
+.login-brand-logo {
     width: 52px;
     height: 52px;
-    display: grid;
-    place-items: center;
+    object-fit: contain;
     border-radius: 14px;
-    background: var(--color-navy-900);
-    color: #fff;
-    font-weight: 800;
-    font-size: 18px;
+    background: #fff;
+    box-shadow: var(--shadow-sm);
+    padding: 3px;
+    flex-shrink: 0;
+}
+
+.login-brand span {
+    display: block;
+    color: var(--color-text-faint);
+    font-size: 10.5px;
+    margin-top: 2px;
+}
+
+.login-heading {
+    margin-top: 28px;
+}
+
+.login-kicker {
+    color: var(--color-primary-light);
+    font-size: 11px;
+    font-weight: 700;
     margin-bottom: 18px;
 }
 
 .login-eyebrow {
     color: var(--color-primary-light);
-    font-size: 12px;
+    font-size: 13px;
     font-weight: 700;
-    margin-bottom: 6px;
 }
 
 .login-card h1 {
@@ -878,6 +901,13 @@ table.data-table tbody tr:last-child td {
     color: var(--color-text-muted);
     font-size: 13px;
     margin-top: 8px;
+}
+
+.login-security-note {
+    color: var(--color-text-faint);
+    font-size: 10.5px;
+    line-height: 1.8;
+    margin-top: 14px;
 }
 
 .login-form {
@@ -945,6 +975,119 @@ table.data-table tbody tr:last-child td {
 @media (max-width: 480px) {
     .login-card {
         padding: 26px 20px;
+    }
+}
+
+/* ===== Executive focus ===== */
+.executive-focus {
+    margin-bottom: 16px;
+}
+
+.executive-focus-subtitle {
+    font-size: 11.5px;
+    margin-top: 3px;
+}
+
+.executive-focus-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+}
+
+.executive-focus-item {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    min-width: 0;
+    border: 1px solid var(--color-border);
+    border-radius: var(--radius-md);
+    background: var(--color-surface);
+    padding: 12px;
+    text-align: right;
+    color: var(--color-text);
+    transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+}
+
+.executive-focus-item:hover,
+.executive-focus-item:focus-visible {
+    border-color: var(--color-primary-light);
+    box-shadow: var(--shadow-sm);
+    transform: translateY(-1px);
+    outline: none;
+}
+
+.executive-focus-icon {
+    width: 34px;
+    height: 34px;
+    display: grid;
+    place-items: center;
+    border-radius: 9px;
+    flex-shrink: 0;
+}
+
+.executive-focus-copy {
+    display: grid;
+    gap: 2px;
+    min-width: 0;
+    flex: 1;
+}
+
+.executive-focus-copy strong {
+    font-size: 11px;
+    color: var(--color-text-muted);
+}
+
+.executive-focus-copy span {
+    font-size: 13px;
+    font-weight: 700;
+    color: var(--color-navy-900);
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.executive-focus-copy small {
+    color: var(--color-text-faint);
+    font-size: 10.5px;
+}
+
+.executive-focus-danger .executive-focus-icon {
+    color: var(--color-danger);
+    background: var(--color-danger-bg);
+}
+
+.executive-focus-info .executive-focus-icon {
+    color: var(--color-info);
+    background: var(--color-info-bg);
+}
+
+.executive-focus-success .executive-focus-icon {
+    color: var(--color-success);
+    background: var(--color-success-bg);
+}
+
+.mini-stat-button {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    text-align: right;
+    color: inherit;
+}
+
+.mini-stat-button:focus-visible {
+    outline: 2px solid var(--color-primary-light);
+    outline-offset: 4px;
+    border-radius: var(--radius-sm);
+}
+
+@media (max-width: 720px) {
+    .executive-focus-grid {
+        grid-template-columns: 1fr;
+    }
+
+    .executive-focus-item {
+        min-height: 62px;
     }
 }
 
