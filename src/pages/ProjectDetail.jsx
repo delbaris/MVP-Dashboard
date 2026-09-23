@@ -1,7 +1,5 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getProjectById } from "../data/projects.js";
-import { getEmployeeById } from "../data/employees.js";
 import { getTasksByProject } from "../data/tasks.js";
 import { getActivitiesByProject } from "../data/activities.js";
 import Avatar from "../components/ui/Avatar.jsx";
@@ -9,6 +7,7 @@ import Badge from "../components/ui/Badge.jsx";
 import ProgressBar from "../components/ui/ProgressBar.jsx";
 import EmptyState from "../components/ui/EmptyState.jsx";
 import { projectStatusMap, taskStatusMap, priorityMap, severityMap } from "../utils/statusMaps.js";
+import { useData } from "../context/DataContext.jsx";
 
 const TABS = [
     { key: "overview", label: "نمای کلی" },
@@ -23,14 +22,15 @@ export default function ProjectDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [tab, setTab] = useState("overview");
-    const project = getProjectById(id);
+    const { projects, employees } = useData();
+    const project = projects.find((record) => record.id === id);
 
     if (!project) {
-        return <EmptyState icon="📁" title="پروژه یافت نشد" subtitle="این شناسه در Mock Data موجود نیست." />;
+        return <EmptyState icon="📁" title="پروژه یافت نشد" subtitle="این شناسه در داده‌های دمو موجود نیست." action={<button className="btn btn-primary" onClick={() => navigate("/projects")}>بازگشت به فهرست پروژه‌ها</button>} />;
     }
 
-    const manager = getEmployeeById(project.managerId);
-    const members = project.memberIds.map((mid) => getEmployeeById(mid)).filter(Boolean);
+    const manager = employees.find((employee) => employee.id === project.managerId);
+    const members = project.memberIds.map((mid) => employees.find((employee) => employee.id === mid)).filter(Boolean);
     const tasks = getTasksByProject(project.id);
     const activities = getActivitiesByProject(project.id);
     const st = projectStatusMap[project.status];

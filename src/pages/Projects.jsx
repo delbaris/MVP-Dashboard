@@ -1,7 +1,5 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import { projects, getProjectById } from "../data/projects.js";
-import { getEmployeeById, employees } from "../data/employees.js";
 import { getTasksByProject } from "../data/tasks.js";
 import Badge from "../components/ui/Badge.jsx";
 import ProgressBar from "../components/ui/ProgressBar.jsx";
@@ -17,12 +15,13 @@ export default function Projects() {
     const [status, setStatus] = useState("all");
     const [manager, setManager] = useState("all");
     const [formOpen, setFormOpen] = useState(false);
-    const { projects: projectRecords, addRecord } = useData();
+    const [editingProject, setEditingProject] = useState(null);
+    const { projects: projectRecords, employees: employeeRecords, addRecord, updateRecord, deleteRecord } = useData();
 
     const managers = useMemo(() => {
         const ids = [...new Set(projectRecords.map((p) => p.managerId))];
-        return ids.map((id) => getEmployeeById(id)).filter(Boolean);
-    }, [projectRecords]);
+        return ids.map((id) => employeeRecords.find((employee) => employee.id === id)).filter(Boolean);
+    }, [projectRecords, employeeRecords]);
 
     const filtered = useMemo(() => {
         return projectRecords.filter((p) => {
@@ -68,7 +67,7 @@ export default function Projects() {
             ) : (
                 <div className="project-card-grid">
                     {filtered.map((p) => {
-                        const mgr = getEmployeeById(p.managerId);
+                        const mgr = employeeRecords.find((employee) => employee.id === p.managerId);
                         const st = projectStatusMap[p.status];
                         const openTasks = getTasksByProject(p.id).filter((t) => t.status !== "Done").length;
                         const healthColor = p.health >= 80 ? "var(--color-success)" : p.health >= 60 ? "var(--color-warning)" : "var(--color-danger)";
@@ -95,6 +94,10 @@ export default function Projects() {
                                     <span>سلامت پروژه</span>
                                     <span className="health-pill" style={{ color: healthColor }}>{p.health}/100</span>
                                 </div>
+                                <div className="table-actions" onClick={(event) => event.stopPropagation()}>
+                                    <button type="button" className="btn btn-sm btn-ghost" onClick={() => { setEditingProject(p); setFormOpen(true); }}>ویرایش</button>
+                                    <button type="button" className="btn btn-sm btn-danger" onClick={() => { if (window.confirm("این پروژه از داده‌های دمو حذف شود؟")) deleteRecord("projects", p.id); }}>حذف</button>
+                                </div>
                             </div>
                         );
                     })}
@@ -102,20 +105,24 @@ export default function Projects() {
             )}
             <EntityModal
                 open={formOpen}
-                onClose={() => setFormOpen(false)}
-                title="ثبت پروژه جدید"
+                onClose={() => { setFormOpen(false); setEditingProject(null); }}
+                title={editingProject ? "ویرایش پروژه" : "ثبت پروژه جدید"}
                 description="اطلاعات پایه پروژه را ثبت کنید؛ اعضا، WBS، کارها و ریسک‌ها از صفحه جزئیات تکمیل می‌شوند."
                 fields={[
                     { name: "name", label: "نام پروژه", required: true },
                     { name: "client", label: "مشتری / واحد درخواست‌کننده", required: true },
                     { name: "managerId", label: "مدیر پروژه", type: "select", required: true, options: managers.map((m) => ({ value: m.id, label: m.name })) },
                     { name: "status", label: "وضعیت", type: "select", required: true, options: [{ value: "On Track", label: "طبق برنامه" }, { value: "At Risk", label: "در معرض ریسک" }, { value: "Delayed", label: "تاخیر" }] },
-                    { name: "startDate", label: "تاریخ شروع", required: true },
-                    { name: "deadline", label: "موعد تحویل", required: true },
+                    { name: "startDate", label: "تاریخ شروع", type: "date", required: true },
+                    { name: "deadline", label: "موعد تحویل", type: "date", required: true },
                     { name: "description", label: "شرح پروژه", type: "textarea" },
                 ]}
-                initialValues={{ status: "On Track", managerId: managers[0]?.id || "" }}
-                onSubmit={(values) => addRecord("projects", { ...values, id: `proj-demo-${Date.now()}`, health: 100, progress: 0, memberIds: [], milestones: [], risks: [] })}
+                initialValues={editingProject || { status: "On Track", managerId: managers[0]?.id || "" }}
+                onSubmit={(values) => {
+                    if (editingProject) updateRecord("projects", editingProject.id, values);
+                    else addRecord("projects", { ...values, id: `proj-demo-${Date.now()}`, health: 100, progress: 0, memberIds: [], milestones: [], risks: [] });
+                    setEditingProject(null);
+                }}
             />
         </div>
     );

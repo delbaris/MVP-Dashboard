@@ -1,10 +1,8 @@
 import React, { useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import { getEmployeeById, employees } from "../data/employees.js";
 import { teams } from "../data/teams.js";
 import { getTasksByEmployee } from "../data/tasks.js";
 import { getActivitiesByEmployee } from "../data/activities.js";
-import { projects } from "../data/projects.js";
 import {
     journeyStages,
     journeyStagesFa,
@@ -17,6 +15,7 @@ import Badge from "../components/ui/Badge.jsx";
 import ProgressBar from "../components/ui/ProgressBar.jsx";
 import EmptyState from "../components/ui/EmptyState.jsx";
 import { employeeStatusMap, taskStatusMap, priorityMap } from "../utils/statusMaps.js";
+import { useData } from "../context/DataContext.jsx";
 
 const TABS = [
     { key: "overview", label: "نمای کلی" },
@@ -34,7 +33,8 @@ export default function EmployeeDetail() {
     const { id } = useParams();
     const navigate = useNavigate();
     const [tab, setTab] = useState("overview");
-    const employee = getEmployeeById(id);
+    const { employees, projects } = useData();
+    const employee = employees.find((record) => record.id === id);
 
     if (!employee) {
         return (
@@ -42,6 +42,7 @@ export default function EmployeeDetail() {
                 icon="👤"
                 title="کارمند یافت نشد"
                 subtitle="این شناسه در Mock Data موجود نیست."
+                action={<button className="btn btn-primary" onClick={() => navigate("/employees")}>بازگشت به فهرست پرسنل</button>}
             />
         );
     }

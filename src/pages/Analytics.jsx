@@ -16,10 +16,8 @@ import {
     Tooltip,
     Legend,
 } from "recharts";
-import { employees } from "../data/employees.js";
-import { tasks } from "../data/tasks.js";
-import { projects } from "../data/projects.js";
 import { teams } from "../data/teams.js";
+import { useData } from "../context/DataContext.jsx";
 
 const employeeGrowth = [
     { month: "فروردین", count: 9 },
@@ -50,6 +48,7 @@ const overdueTrend = [
 const STATUS_COLORS = { Todo: "#98a2b3", "In Progress": "#2b6cb0", Review: "#b8860b", Blocked: "#b23b3b", Done: "#1f8a5f" };
 
 export default function Analytics() {
+    const { employees, tasks, projects } = useData();
     const taskStatusData = Object.keys(STATUS_COLORS).map((status) => ({
         name: status,
         value: tasks.filter((t) => t.status === status).length,
@@ -76,11 +75,11 @@ export default function Analytics() {
             <div className="analytics-grid">
                 <div className="card chart-card">
                     <div className="section-title">رشد تعداد کارکنان</div>
-                    <ResponsiveContainer width="100%" height={240}>
+                    <ResponsiveContainer width="100%" height={270}>
                         <AreaChart data={employeeGrowth}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#eef1f5" />
-                            <XAxis dataKey="month" tick={{ fontSize: 11 }} />
-                            <YAxis tick={{ fontSize: 11 }} />
+                            <XAxis dataKey="month" tick={{ fontSize: 11 }} label={{ value: "ماه", position: "insideBottom", offset: -8 }} />
+                            <YAxis tick={{ fontSize: 11 }} label={{ value: "تعداد نفر", angle: -90, position: "insideLeft", style: { textAnchor: "middle" } }} />
                             <Tooltip />
                             <Area type="monotone" dataKey="count" stroke="#1f3a5f" fill="#dce6f2" name="کارکنان" />
                         </AreaChart>
@@ -89,11 +88,11 @@ export default function Analytics() {
 
                 <div className="card chart-card">
                     <div className="section-title">روند جذب و استخدام</div>
-                    <ResponsiveContainer width="100%" height={240}>
+                    <ResponsiveContainer width="100%" height={270}>
                         <LineChart data={hiringTrend}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#eef1f5" />
-                            <XAxis dataKey="month" tick={{ fontSize: 11 }} />
-                            <YAxis tick={{ fontSize: 11 }} />
+                            <XAxis dataKey="month" tick={{ fontSize: 11 }} label={{ value: "ماه", position: "insideBottom", offset: -8 }} />
+                            <YAxis tick={{ fontSize: 11 }} label={{ value: "تعداد", angle: -90, position: "insideLeft", style: { textAnchor: "middle" } }} />
                             <Tooltip />
                             <Legend wrapperStyle={{ fontSize: 12 }} />
                             <Line type="monotone" dataKey="applied" stroke="#3a6ea5" name="رزومه دریافتی" />
@@ -104,11 +103,11 @@ export default function Analytics() {
 
                 <div className="card chart-card">
                     <div className="section-title">پیشرفت پروژه‌ها</div>
-                    <ResponsiveContainer width="100%" height={240}>
-                        <BarChart data={projectProgressData} layout="vertical" margin={{ left: 10 }}>
+                    <ResponsiveContainer width="100%" height={300}>
+                        <BarChart data={projectProgressData} layout="vertical" margin={{ left: 16, right: 28, top: 8, bottom: 8 }}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#eef1f5" />
-                            <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11 }} />
-                            <YAxis type="category" dataKey="name" width={100} tick={{ fontSize: 11 }} />
+                            <XAxis type="number" domain={[0, 100]} tick={{ fontSize: 11 }} label={{ value: "درصد پیشرفت", position: "insideBottom", offset: -4 }} />
+                            <YAxis type="category" dataKey="name" width={130} tick={{ fontSize: 11 }} label={{ value: "پروژه", angle: -90, position: "insideLeft", style: { textAnchor: "middle" } }} />
                             <Tooltip />
                             <Bar dataKey="progress" fill="#3a6ea5" radius={[0, 6, 6, 0]} name="پیشرفت (%)" />
                         </BarChart>
@@ -117,7 +116,7 @@ export default function Analytics() {
 
                 <div className="card chart-card">
                     <div className="section-title">توزیع وضعیت Taskها</div>
-                    <ResponsiveContainer width="100%" height={240}>
+                    <ResponsiveContainer width="100%" height={270}>
                         <PieChart>
                             <Pie data={taskStatusData} dataKey="value" nameKey="name" innerRadius={50} outerRadius={85} paddingAngle={2}>
                                 {taskStatusData.map((entry) => (
@@ -132,11 +131,11 @@ export default function Analytics() {
 
                 <div className="card chart-card">
                     <div className="section-title">روند Taskهای دارای تاخیر</div>
-                    <ResponsiveContainer width="100%" height={240}>
+                    <ResponsiveContainer width="100%" height={270}>
                         <LineChart data={overdueTrend}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#eef1f5" />
-                            <XAxis dataKey="week" tick={{ fontSize: 11 }} />
-                            <YAxis tick={{ fontSize: 11 }} />
+                            <XAxis dataKey="week" tick={{ fontSize: 11 }} label={{ value: "بازه زمانی", position: "insideBottom", offset: -8 }} />
+                            <YAxis tick={{ fontSize: 11 }} label={{ value: "تعداد Task", angle: -90, position: "insideLeft", style: { textAnchor: "middle" } }} />
                             <Tooltip />
                             <Line type="monotone" dataKey="overdue" stroke="#b23b3b" name="تعداد Task عقب‌افتاده" />
                         </LineChart>
@@ -145,11 +144,11 @@ export default function Analytics() {
 
                 <div className="card chart-card">
                     <div className="section-title">بار کاری تیم‌ها</div>
-                    <ResponsiveContainer width="100%" height={240}>
+                    <ResponsiveContainer width="100%" height={300}>
                         <BarChart data={workloadData}>
                             <CartesianGrid strokeDasharray="3 3" stroke="#eef1f5" />
-                            <XAxis dataKey="name" tick={{ fontSize: 11 }} />
-                            <YAxis tick={{ fontSize: 11 }} />
+                            <XAxis dataKey="name" tick={{ fontSize: 11 }} label={{ value: "تیم", position: "insideBottom", offset: -8 }} />
+                            <YAxis tick={{ fontSize: 11 }} label={{ value: "ساعت/واحد بار", angle: -90, position: "insideLeft", style: { textAnchor: "middle" } }} />
                             <Tooltip />
                             <Legend wrapperStyle={{ fontSize: 12 }} />
                             <Bar dataKey="assigned" fill="#3a6ea5" name="بار تخصیص‌یافته" radius={[6, 6, 0, 0]} />

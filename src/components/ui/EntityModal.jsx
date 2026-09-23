@@ -1,10 +1,15 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Modal from "./Modal.jsx";
 import FormField from "./FormField.jsx";
+import JalaliDatePicker from "./JalaliDatePicker.jsx";
 
 export default function EntityModal({ open, onClose, title, description, fields, initialValues, onSubmit, submitLabel = "ذخیره اطلاعات" }) {
     const [values, setValues] = useState(initialValues);
     const [error, setError] = useState("");
+
+    useEffect(() => {
+        if (open) setValues(initialValues || {});
+    }, [open]);
 
     function update(name, value) {
         setValues((previous) => ({ ...previous, [name]: value }));
@@ -29,7 +34,9 @@ export default function EntityModal({ open, onClose, title, description, fields,
                 <div className="entity-form-grid">
                     {fields.map((field) => (
                         <FormField key={field.name} label={field.label} required={field.required} hint={field.hint}>
-                            {field.type === "textarea" ? (
+                            {field.type === "date" ? (
+                                <JalaliDatePicker value={values[field.name] || ""} onChange={(value) => update(field.name, value)} placeholder={field.placeholder} />
+                            ) : field.type === "textarea" ? (
                                 <textarea rows={3} value={values[field.name] || ""} onChange={(event) => update(field.name, event.target.value)} placeholder={field.placeholder} />
                             ) : field.type === "select" ? (
                                 <select value={values[field.name] || ""} onChange={(event) => update(field.name, event.target.value)}>

@@ -12,7 +12,9 @@ export default function Recruitment() {
     const [params] = useSearchParams();
     const [activeCandidate, setActiveCandidate] = useState(null);
     const [formOpen, setFormOpen] = useState(false);
-    const { candidates: candidateRecords, addRecord } = useData();
+    const [sourceFormOpen, setSourceFormOpen] = useState(false);
+    const [editingSource, setEditingSource] = useState(null);
+    const { candidates: candidateRecords, recruitmentSources, addRecord, updateRecord, deleteRecord } = useData();
     const highlightStage = params.get("stage");
     const stageLabels = useMemo(() => Object.fromEntries(recruitmentFunnel.map((stage) => [stage.key, stage.label])), []);
 
@@ -101,11 +103,41 @@ export default function Recruitment() {
                     { name: "appliedRole", label: "سمت مورد درخواست", required: true },
                     { name: "experience", label: "سابقه کاری", required: true, placeholder: "مثلاً ۳ سال" },
                     { name: "owner", label: "مسئول پیگیری", required: true },
-                    { name: "stageKey", label: "مرحله فعلی", type: "select", required: true, options: [{ value: "applied", label: "رزومه دریافتی" }, { value: "screening", label: "غربالگری" }, { value: "technical", label: "مصاحبه فنی" }, { value: "management", label: "مصاحبه مدیریت" }, { value: "offer", label: "پیشنهاد همکاری" }] },
+                    { name: "source", label: "منبع جذب", type: "select", required: true, options: recruitmentSources.map((source) => ({ value: source.name, label: source.name })) },
+                    { name: "stageKey", label: "مرحله فعلی", type: "select", required: true, options: [{ value: "applicants", label: "رزومه دریافتی" }, { value: "screening", label: "غربالگری" }, { value: "technical", label: "مصاحبه فنی" }, { value: "management", label: "مصاحبه مدیریت" }, { value: "offer", label: "پیشنهاد همکاری" }] },
                     { name: "resumeSummary", label: "خلاصه رزومه", type: "textarea" },
                 ]}
-                initialValues={{ stageKey: "applied", score: 0, lastActivity: "امروز", interviews: [] }}
+                initialValues={{ stageKey: "applicants", source: recruitmentSources[0]?.name || "", score: 0, lastActivity: "امروز", interviews: [] }}
                 onSubmit={(values) => addRecord("candidates", { ...values, id: `cand-demo-${Date.now()}`, stage: stageLabels[values.stageKey], technicalScore: 0, behavioralScore: 0, managerReview: "", notes: "" })}
+            />
+            <div className="card card-pad source-management">
+                <div className="card-title-row">
+                    <h3>منابع جذب</h3>
+                    <button className="btn btn-sm btn-primary" type="button" onClick={() => { setEditingSource(null); setSourceFormOpen(true); }}>افزودن منبع</button>
+                </div>
+                <div className="source-list">
+                    {recruitmentSources.map((source) => (
+                        <div className="source-row" key={source.id}>
+                            <span>{source.name}</span>
+                            <span className="table-actions">
+                                <button type="button" className="btn btn-sm btn-ghost" onClick={() => { setEditingSource(source); setSourceFormOpen(true); }}>ویرایش</button>
+                                <button type="button" className="btn btn-sm btn-danger" onClick={() => { if (window.confirm("این منبع جذب حذف شود؟")) deleteRecord("recruitmentSources", source.id); }}>حذف</button>
+                            </span>
+                        </div>
+                    ))}
+                </div>
+            </div>
+            <EntityModal
+                open={sourceFormOpen}
+                onClose={() => { setSourceFormOpen(false); setEditingSource(null); }}
+                title={editingSource ? "ویرایش منبع جذب" : "افزودن منبع جذب"}
+                fields={[{ name: "name", label: "عنوان منبع", required: true, placeholder: "مثلاً جاب‌ویژن" }]}
+                initialValues={editingSource || {}}
+                onSubmit={(values) => {
+                    if (editingSource) updateRecord("recruitmentSources", editingSource.id, values);
+                    else addRecord("recruitmentSources", { ...values, id: `source-demo-${Date.now()}` });
+                    setEditingSource(null);
+                }}
             />
         </div>
     );

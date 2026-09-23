@@ -1,6 +1,5 @@
 import React, { useMemo, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { employees } from "../data/employees.js";
 import { teams } from "../data/teams.js";
 import { getTasksByEmployee } from "../data/tasks.js";
 import Avatar from "../components/ui/Avatar.jsx";
@@ -18,7 +17,8 @@ export default function Employees() {
     const [status, setStatus] = useState(params.get("status") || "all");
     const [team, setTeam] = useState(params.get("team") || "all");
     const [formOpen, setFormOpen] = useState(false);
-    const { employees: employeeRecords, addRecord } = useData();
+    const [editingEmployee, setEditingEmployee] = useState(null);
+    const { employees: employeeRecords, addRecord, updateRecord, deleteRecord } = useData();
 
     const filtered = useMemo(() => {
         return employeeRecords.filter((e) => {
@@ -38,7 +38,7 @@ export default function Employees() {
         { name: "role", label: "سمت", required: true },
         { name: "location", label: "محل استقرار", required: true, placeholder: "تهران / دبی" },
         { name: "status", label: "وضعیت", type: "select", required: true, options: [{ value: "Active", label: "فعال" }, { value: "Onboarding", label: "در حال ورود" }, { value: "Available", label: "آماده تخصیص" }] },
-        { name: "hireDate", label: "تاریخ شروع", required: true, placeholder: "1405-01-01" },
+        { name: "hireDate", label: "تاریخ شروع", type: "date", required: true, placeholder: "انتخاب تاریخ" },
     ];
 
     return (
@@ -88,12 +88,13 @@ export default function Employees() {
                                     <th>وضعیت</th>
                                     <th>Taskهای باز</th>
                                     <th>محل استقرار</th>
+                                    <th>عملیات</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 {filtered.map((e) => {
                                     const teamInfo = teams.find((t) => t.id === e.teamId);
-                                    const manager = employees.find((m) => m.id === e.managerId);
+                                    const manager = employeeRecords.find((m) => m.id === e.managerId);
                                     const openTasks = getTasksByEmployee(e.id).filter((t) => t.status !== "Done").length;
                                     const st = employeeStatusMap[e.status];
                                     return (
@@ -112,6 +113,12 @@ export default function Employees() {
                                             <td><Badge className={st.badge}>{st.label}</Badge></td>
                                             <td>{openTasks}</td>
                                             <td>{e.location}</td>
+                                            <td>
+                                                <div className="table-actions">
+                                                    <button type="button" className="btn btn-sm btn-ghost" onClick={(event) => { event.stopPropagation(); setEditingEmployee(e); setFormOpen(true); }}>ویرایش</button>
+                                                    <button type="button" className="btn btn-sm btn-danger" onClick={(event) => { event.stopPropagation(); if (window.confirm("این پرسنل از داده‌های دمو حذف شود؟")) deleteRecord("employees", e.id); }}>حذف</button>
+                                                </div>
+                                            </td>
                                         </tr>
                                     );
                                 })}
@@ -122,13 +129,17 @@ export default function Employees() {
             </div>
             <EntityModal
                 open={formOpen}
-                onClose={() => setFormOpen(false)}
-                title="ثبت پرسنل جدید"
+                onClose={() => { setFormOpen(false); setEditingEmployee(null); }}
+                title={editingEmployee ? "ویرایش اطلاعات پرسنل" : "ثبت پرسنل جدید"}
                 description="اطلاعات پایه را وارد کنید؛ جزئیات تخصیص پروژه و مهارت‌ها بعداً از پروفایل فرد تکمیل می‌شود."
-                fields={employeeFields}
-                initialValues={{ status: "Active" }}
-                onSubmit={(values) => addRecord("employees", { ...values, id: `emp-demo-${Date.now()}`, avatarColor: "#3a6ea5", title: values.role, teamId: "team-management", managerId: "emp-01", phone: "", skills: [] })}
-            />
+                        fields={employeeFields}
+                        initialValues={editingEmployee || { status: "Active" }}
+                        onSubmit={(values) => {
+                            if (editingEmployee) updateRecord("employees", editingEmployee.id, values);
+                            else addRecord("employees", { ...values, id: `emp-demo-${Date.now()}`, avatarColor: "#3a6ea5", title: values.role, teamId: "team-management", managerId: "emp-01", phone: "", skills: [] });
+                            setEditingEmployee(null);
+                        }}
+                    />
         </div>
     );
 }
