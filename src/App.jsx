@@ -15,27 +15,38 @@ import Alerts from "./pages/Alerts.jsx";
 import Copilot from "./pages/Copilot.jsx";
 import Settings from "./pages/Settings.jsx";
 import NotFound from "./pages/NotFound.jsx";
+import Login from "./pages/Login.jsx";
+import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
+
+function ProtectedRoutes() {
+    const { user } = useAuth();
+    return user ? (
+        <Routes>
+            <Route element={<AppLayout />}>
+                <Route path="/" element={<Dashboard />} />
+                <Route path="/employees" element={<Employees />} />
+                <Route path="/employees/:id" element={<EmployeeDetail />} />
+                <Route path="/recruitment" element={<Recruitment />} />
+                <Route path="/recruitment/:id" element={<CandidateDetail />} />
+                <Route path="/projects" element={<Projects />} />
+                <Route path="/projects/:id" element={<ProjectDetail />} />
+                <Route path="/activities" element={<Activities />} />
+                <Route path="/analytics" element={<Analytics />} />
+                <Route path="/alerts" element={<Alerts />} />
+                <Route path="/copilot" element={<Copilot />} />
+                <Route path="/settings" element={<Settings />} />
+                <Route path="*" element={<NotFound />} />
+            </Route>
+        </Routes>
+    ) : <Routes><Route path="*" element={<Login />} /></Routes>;
+}
 
 export default function App() {
     return (
-        <AppProvider>
-            <Routes>
-                <Route element={<AppLayout />}>
-                    <Route path="/" element={<Dashboard />} />
-                    <Route path="/employees" element={<Employees />} />
-                    <Route path="/employees/:id" element={<EmployeeDetail />} />
-                    <Route path="/recruitment" element={<Recruitment />} />
-                    <Route path="/recruitment/:id" element={<CandidateDetail />} />
-                    <Route path="/projects" element={<Projects />} />
-                    <Route path="/projects/:id" element={<ProjectDetail />} />
-                    <Route path="/activities" element={<Activities />} />
-                    <Route path="/analytics" element={<Analytics />} />
-                    <Route path="/alerts" element={<Alerts />} />
-                    <Route path="/copilot" element={<Copilot />} />
-                    <Route path="/settings" element={<Settings />} />
-                    <Route path="*" element={<NotFound />} />
-                </Route>
-            </Routes>
-        </AppProvider>
+        <AuthProvider>
+            <AppProvider>
+                <ProtectedRoutes />
+            </AppProvider>
+        </AuthProvider>
     );
 }
