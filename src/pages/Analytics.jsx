@@ -18,6 +18,7 @@ import {
 } from "recharts";
 import { teams } from "../data/teams.js";
 import { useData } from "../context/DataContext.jsx";
+import ExecutiveFinanceReport from "../components/dashboard/ExecutiveFinanceReport.jsx";
 
 const employeeGrowth = [
     { month: "فروردین", count: 9 },
@@ -71,6 +72,8 @@ export default function Analytics() {
                 </div>
                 <span className="proto-badge">🧪 Prototype / Concept</span>
             </div>
+
+            <ExecutiveFinanceReport />
 
             <div className="analytics-grid">
                 <div className="card chart-card">

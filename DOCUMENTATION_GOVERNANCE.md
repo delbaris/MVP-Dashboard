@@ -18,6 +18,7 @@ If documents conflict, do not guess. Verify implementation and decision status; 
 - `PROJECT_INDEX.md`: summary, reading order, repository map and change protocol.
 - `PROJECT_CONTEXT.md`: mission, organization assumptions, principles, phases and target direction.
 - `CURRENT_STATE.md`: dated facts verified in code/config/tests and known gaps.
+- `MANAGEMENT_FEEDBACK_YYYY-MM-DD.md`: dated stakeholder feedback, preserved as received in substance and translated into UX direction, acceptance outline and linked open decisions.
 - `DECISIONS.md`: accepted principles, dated decision records, proposals and rationale.
 - `OPEN_QUESTIONS.md`: unresolved business/technical choices and owners needed.
 - `PROJECT_REQUIREMENTS.md`: testable capability and quality requirements.
@@ -34,6 +35,7 @@ If documents conflict, do not guess. Verify implementation and decision status; 
 |---|---|
 | New/changed/removed capability | `PROJECT_REQUIREMENTS.md`, module docs, `CURRENT_STATE.md`, `PROJECT_INDEX.md` if map changes |
 | Business policy/status/KPI/cost/time decision | `DECISIONS.md`, `OPEN_QUESTIONS.md`, requirements, business/data blueprint |
+| New stakeholder feedback | Add a dated feedback record; update `PROJECT_INDEX.md`, requirements and relevant blueprint/current state; record unresolved policy in `OPEN_QUESTIONS.md` |
 | Architecture/hosting/security boundary | `DECISIONS.md`, `ARCHITECTURE_DECISION.md`, `CURRENT_STATE.md`, requirements |
 | Entity, relationship, source-of-truth, retention change | `DATA_MODEL_BLUEPRINT.md`, related requirements/module docs, decision log |
 | New module starts | Add focused module documentation; update index and implementation state |

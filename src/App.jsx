@@ -14,6 +14,7 @@ import Analytics from "./pages/Analytics.jsx";
 import Alerts from "./pages/Alerts.jsx";
 import Copilot from "./pages/Copilot.jsx";
 import Settings from "./pages/Settings.jsx";
+import Profile from "./pages/Profile.jsx";
 import NotFound from "./pages/NotFound.jsx";
 import Login from "./pages/Login.jsx";
 import { AuthProvider, useAuth } from "./context/AuthContext.jsx";
@@ -36,6 +37,7 @@ function ProtectedRoutes() {
                 <Route path="/alerts" element={<Alerts />} />
                 <Route path="/copilot" element={<Copilot />} />
                 <Route path="/settings" element={<Settings />} />
+                <Route path="/profile" element={<Profile />} />
                 <Route path="*" element={<NotFound />} />
             </Route>
         </Routes>

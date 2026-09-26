@@ -34,12 +34,20 @@ Requirements below capture the supplied product baseline. They describe the inte
 - **REQ-TIME-02:** Derive reported actual project time from valid/approved entries according to a documented, tested policy.
 - **REQ-FIN-01:** Support planned hours, actual hours, remaining hours, planned/actual cost, remaining budget, variance, forecast and budget revision history.
 - **REQ-FIN-02:** If labor cost is derived from hours × cost rate, use approved hours and the correct effective-dated rate; protect rate data by permission and scope.
+- **REQ-FIN-03:** Provide budget and cost reporting with a drill-down from project/company summaries to authorized, categorized underlying cost entries and budget revisions. Clearly distinguish budget, committed cost, approved actual cost, forecast and remaining budget; never imply the current demo estimates are ledger data.
+- **REQ-FIN-04:** Support a gross-revenue overview only after its business definition, period, source records, currency/tax treatment and access policy are approved. Revenue must remain distinguishable from budget, contract value, invoiced revenue and recognized revenue.
 - **REQ-PROG-01:** Do not treat an unweighted average of task percentages as project progress without explicit, documented validation. Any roll-up or override must be explainable and auditable.
 
 ### Management information and operations
 
 - **REQ-DASH-01:** Provide decision-support views for people, projects, capacity, resources, time, cost/finance, progress, variance, quality/status, distribution, bottlenecks and alerts.
-- **REQ-DASH-02:** Provide useful time-window selection, low-density presentation, clear deviations and drill-down to authorized source records.
+- **REQ-DASH-02:** Use a mobile-first, low-density executive home view. In the requested priority order, surface: total budget and total cost; total gross revenue; active projects; issues requiring executive follow-up; team/management meeting schedule; active employee count; recruitment. Present concise cards/charts and allow authorized drill-down to details.
+- **REQ-DASH-03:** Provide role-aware home experiences: employees can reach their own profile and relevant work; managers see an authorized management dashboard and their own profile. A client-side role switch is not an identity or authorization solution.
+- **REQ-DASH-04:** Adapt chart/card density and navigation to narrow mobile widths first, then expand progressively for larger viewports; maintain readable Persian RTL layout and accessible drill-down controls.
+- **REQ-DASH-05:** Provide an executive follow-up view backed by actionable, scoped issues/alerts with accountable owner, severity, status and drill-down; agree which signals qualify before presenting an aggregate count.
+- **REQ-DASH-06:** Provide a schedule surface for relevant team/management meetings with clear ownership, time zone, visibility and detail navigation, subject to scheduling/privacy policy and an approved data source.
+- **REQ-DASH-07:** Preserve existing project detail overview, structure, resources and related sections, and add a project Gantt/timeline above them. Gantt items must be selectable to open the corresponding authorized phase/work item/milestone details; do not replace existing sections.
+- **REQ-DASH-08:** Gantt must communicate schedule dates, duration, hierarchy and status at a glance, work on mobile (for example, horizontal timeline interaction without hiding labels/actions), and expose an accessible non-chart route to the same details. Define its source of dates/status and behavior for undated items before production use.
 - **REQ-KPI-01:** Define every material KPI by formula, source, time window, aggregation, refresh policy, data-validity status and drill-down target before treating it as decision-grade.
 - **REQ-ALERT-01:** Support derived signals for time consumption vs progress, deadline breach, capacity shortage, over-allocation, projects without active tasks, stale progress, financial overrun risk and severe planned-vs-actual variance.
 - **REQ-ALERT-02:** Show source, rule/threshold, detection time, severity and affected record for every alert; alerts are not authoritative business data.
@@ -50,7 +58,7 @@ Requirements below capture the supplied product baseline. They describe the inte
 
 - Relational integrity and normalized entities; no dashboard as source of truth, universal entity blob, or JSON replacing core relationships.
 - Secure defaults, least privilege, server-side validation, explicit errors, auditable privileged operations, and protection of employee/recruitment/financial data.
-- Responsive, mobile-first, Persian RTL interface; locally hosted assets preferred; correct Persian/Jalali display with a canonical timezone-aware storage policy.
+- Responsive, mobile-first, Persian RTL interface with executive home KPI priority reflecting manager feedback; locally hosted assets preferred; correct Persian/Jalali display with a canonical timezone-aware storage policy.
 - Maintainable modular monolith boundaries, small focused components/services, explicit ownership of derived values, and low unnecessary runtime dependency count.
 - Automated tests for domain rules, authorization/data scope, calculations, date/time handling, migrations, API behavior, and UI behavior as they are introduced.
 - Documentation must distinguish current implementation, confirmed policy, proposed design, and unresolved questions.

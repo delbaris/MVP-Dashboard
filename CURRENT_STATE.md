@@ -1,6 +1,7 @@
 # Current State
 
 **Verified against repository:** 2026-09-26
+**Stakeholder feedback incorporated:** 2026-09-26; mobile executive summary, synthetic finance drill-down, Gantt, and account-profile UI are implemented as prototype-only surfaces.
 **Current product maturity:** UI prototype / concept demonstrator. No production backend or authoritative business data is present.
 
 ## Technology and execution
@@ -17,6 +18,11 @@
 - Employee list/detail, recruitment list/candidate detail, project list/detail, activities, analytics, alerts, concept Copilot, settings, and not-found page.
 - Shared layout/navigation and UI elements (modal/drawer/dialog, form fields, badges, avatar, progress, toast, loading, breadcrumbs, and Jalali date picker).
 - `ProjectStructure` and project-financial presentation utilities are present. Financial values may come from hard-coded demonstration values.
+- Project detail already has overview/structure/resources and related sections; an interactive project Gantt chart above these sections is requested but not present.
+- Project detail now has a selectable, Jalali-date-based Gantt prototype above existing sections. It uses task creation/deadline dates and milestone dates from seed/demo records, opens a selection detail, and links to task/milestone tabs. It is not an approved schedule engine or production plan.
+- Dashboard now places seven manager-prioritized KPI groups in the requested order, with a single-column mobile layout and expandable drill-downs. Revenue and meeting cards use explicitly synthetic demo values; they are not sourced from accounting or a live calendar.
+- Analytics now includes a project budget/cost summary and expandable cost-category breakdowns. The category split is synthetic for UI demonstration; there is still no authoritative ledger, approved expense categorization, revenue source or budget-revision history.
+- A signed-in account profile view is available from the profile menu. It displays the demo account only and is not linked to an Employee record; role selection and client-side route guarding remain non-security prototype behavior.
 - Persian-number and Jalali helpers are present. Existing date data in fixtures is Jalali-shaped text; it is not a canonical server-side timestamp/date policy.
 
 ## State and data behavior
@@ -38,7 +44,7 @@
 
 ## Next recommended engineering step
 
-Do not expand the demo dashboard as if it were the system of record. Validate open business decisions, ratify the Phase 1 architecture and environment, then establish backend solution structure, identity/security foundation, relational migrations, and a tested vertical slice for an employee identity/profile. Replace demo authentication/data flow only with a designed server-backed implementation; do not merely connect production records to the existing local-storage model.
+Use [MANAGEMENT_FEEDBACK_2026-09-26.md](./MANAGEMENT_FEEDBACK_2026-09-26.md) as the product brief. The current additions are UI prototypes only. Confirm gross-revenue and expense definitions, executive issue triage, meeting ownership/privacy, role-specific home views and authoritative schedule sources before presenting any figure as real. For production operations, validate open business decisions and architecture/environment, then establish backend, identity/security, migrations, and a tested employee vertical slice.
 
 ## Evidence map
 

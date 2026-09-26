@@ -69,6 +69,22 @@ These concepts overlap in evidence but are not interchangeable. Set privacy, ret
 
 ## Management dashboard and alerts
 
-Dashboard is decision support, not a data dump. Provide time-window context and drill-down across people, projects, capacity, resources, time, cost, progress, variance, quality/status, distribution, bottlenecks and alerts. Surface missing, stale, provisional or invalid data honestly.
+Dashboard is decision support, not a data dump. The management feedback prioritizes a mobile-first executive home view, top to bottom:
+
+1. Total budget and total cost.
+2. Total gross revenue.
+3. Active projects.
+4. Issues requiring executive follow-up.
+5. Team/management meeting schedule.
+6. Active employee count.
+7. Recruitment.
+
+Each summary should offer an authorized drill-down, while keeping initial mobile density low. The order is a requested information hierarchy, not yet an approved KPI formula or data-access matrix. Role-aware home experience should let an employee see their own profile and relevant work and let managers see their authorized management view and their own profile.
+
+Budget/cost reports should distinguish approved budget revisions, committed cost, approved actual cost, forecast and remaining budget, and drill down to the authorized source details. Gross revenue must not be inferred from budget or contract amount; confirm whether the measure means invoiced, collected or recognized revenue.
+
+Preserve the existing project-detail overview, structure and resource sections. Add a Gantt/timeline above them so the schedule is visible immediately; selecting a bar/milestone should drill into its corresponding authorized details. The timeline is a schedule view, not a substitute for WBS or project data. Define supported levels, date/status source, missing-date treatment and mobile interaction before treating it as operational.
+
+Provide time-window context and drill-down across people, projects, capacity, resources, time, cost, progress, variance, quality/status, distribution, bottlenecks and alerts. Surface missing, stale, provisional or invalid data honestly.
 
 Alerts are derived signals, not canonical project or employee state. Examples: actual time consumption ahead of progress, deadline breach, shortage/over-allocation, project without active work, stale progress, overrun risk, severe planned-vs-actual variance. Every signal needs a defined rule, scope, time basis, severity, owner, refresh and target record.

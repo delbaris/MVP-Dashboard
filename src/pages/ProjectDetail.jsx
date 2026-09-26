@@ -15,6 +15,7 @@ import Icon from "../components/ui/Icon.jsx";
 import Breadcrumbs from "../components/ui/Breadcrumbs.jsx";
 import { toPersianDigits } from "../utils/jalali.js";
 import ProjectStructure from "../components/project/ProjectStructure.jsx";
+import ProjectGantt from "../components/project/ProjectGantt.jsx";
 import { formatDemoMoney, getProjectFinancials } from "../utils/projectFinancials.js";
 
 const TABS = [
@@ -99,6 +100,14 @@ export default function ProjectDetail() {
                 </div>
                 <ProgressBar value={project.progress} />
             </div>
+
+            <ProjectGantt
+                project={project}
+                tasks={tasks}
+                employees={employees}
+                onOpenTasks={() => setTab("tasks")}
+                onOpenMilestones={() => setTab("milestones")}
+            />
 
             <div className="tabs-bar">
                 {TABS.map((t) => (
