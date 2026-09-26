@@ -16,15 +16,16 @@ This repository currently contains a Persian, right-to-left React/Vite single-pa
 
 1. [PROJECT_CONTEXT.md](./PROJECT_CONTEXT.md) — product purpose, organization context, principles, and boundaries.
 2. [CURRENT_STATE.md](./CURRENT_STATE.md) — verified repository and prototype status; current limitations.
-3. [PROJECT_REQUIREMENTS.md](./PROJECT_REQUIREMENTS.md) — Phase 1 functional and non-functional requirements.
-4. [OPEN_QUESTIONS.md](./OPEN_QUESTIONS.md) — unresolved business and technical decisions; do not silently invent answers.
-5. [DECISIONS.md](./DECISIONS.md) — decisions, recommendations, and decision status.
-6. [PRE_IMPLEMENTATION_BLUEPRINT.md](./PRE_IMPLEMENTATION_BLUEPRINT.md) — staged delivery and vertical-slice plan.
-7. [BUSINESS_BLUEPRINT.md](./BUSINESS_BLUEPRINT.md) — business lifecycle and operating concepts.
-8. [DATA_MODEL_BLUEPRINT.md](./DATA_MODEL_BLUEPRINT.md) — conceptual relational model and source-of-truth rules.
-9. [ARCHITECTURE_DECISION.md](./ARCHITECTURE_DECISION.md) — target architecture options and current recommendation.
-10. [AI_DEVELOPMENT_CONTRACT.md](./AI_DEVELOPMENT_CONTRACT.md) — instructions for AI-assisted changes.
-11. [DOCUMENTATION_GOVERNANCE.md](./DOCUMENTATION_GOVERNANCE.md) — how project memory is changed and maintained.
+3. [MANAGEMENT_FEEDBACK_2026-09-26.md](./MANAGEMENT_FEEDBACK_2026-09-26.md) — captured manager/technical-lead feedback and resulting experience direction.
+4. [PROJECT_REQUIREMENTS.md](./PROJECT_REQUIREMENTS.md) — Phase 1 functional and non-functional requirements.
+5. [OPEN_QUESTIONS.md](./OPEN_QUESTIONS.md) — unresolved business and technical decisions; do not silently invent answers.
+6. [DECISIONS.md](./DECISIONS.md) — decisions, recommendations, and decision status.
+7. [PRE_IMPLEMENTATION_BLUEPRINT.md](./PRE_IMPLEMENTATION_BLUEPRINT.md) — staged delivery and vertical-slice plan.
+8. [BUSINESS_BLUEPRINT.md](./BUSINESS_BLUEPRINT.md) — business lifecycle and operating concepts.
+9. [DATA_MODEL_BLUEPRINT.md](./DATA_MODEL_BLUEPRINT.md) — conceptual relational model and source-of-truth rules.
+10. [ARCHITECTURE_DECISION.md](./ARCHITECTURE_DECISION.md) — target architecture options and current recommendation.
+11. [AI_DEVELOPMENT_CONTRACT.md](./AI_DEVELOPMENT_CONTRACT.md) — instructions for AI-assisted changes.
+12. [DOCUMENTATION_GOVERNANCE.md](./DOCUMENTATION_GOVERNANCE.md) — how project memory is changed and maintained.
 
 ## Repository map
 

@@ -34,12 +34,20 @@ These questions block or shape production decisions. Do not silently choose a bu
 19. Are employee hourly cost rates confidential? Who can view/change them? Are rates effective-dated by employee, office, role, or project?
 20. What constitutes planned cost, actual cost, remaining budget, forecast and variance? Is labor cost approved hours multiplied by effective cost rate, or is another policy authoritative?
 21. Which project-progress method is approved: weighted task estimates, earned value, milestone weighting, explicit manual update, or a documented hybrid? Who may override it, and with what reason?
-22. For each KPI, alert and health score, what are exact definition, formula, source, time window, aggregation, refresh, quality/validity handling, severity, owner, and drill-down?
-23. What constitutes "no progress", over-allocation, capacity shortage, severe variance, deadline breach, and financial overrun risk? What notification channels and escalation rules are wanted?
+22. What exactly does "total budget and total cost" mean at company level: approved baseline, current revision, committed spend, approved actuals, forecast, and which projects/time window are included?
+23. Define gross revenue: contract value, invoiced amount, cash received, or recognized revenue? What period, tax/currency/exchange-rate basis, client/project attribution and source of record apply?
+24. Which issues require executive follow-up, how are they deduplicated, assigned, acknowledged/resolved, escalated and counted, and who may see sensitive HR/finance issue details?
+25. What is the source of team/management meetings (manual entry or calendar integration)? Who owns schedules, what timezone/recurrence/attendance details are stored, and what visibility applies to managers versus employees?
+26. Which screen is the default for each role after sign-in? Which profile fields and actions are available to the employee themselves, manager, HR and administrator?
+27. For each KPI card/drill-down, define formula, source, time window, aggregation, refresh, validity/data-quality handling, permission/scope and target view. How should stale or unavailable values appear?
+28. What constitutes "no progress", over-allocation, capacity shortage, severe variance, deadline breach, and financial overrun risk? What notification channels and escalation rules are wanted?
+29. For project Gantt, which records are timeline bars (phases, work packages, tasks, milestones, assignments), what provides start/end dates and dependencies, how are undated/overdue/blocked items displayed, and which item details/actions open on selection?
+30. How should the Gantt work on mobile: horizontally scrollable timeline, day/week/month zoom levels, fixed hierarchy labels, and/or a synchronized list? Which minimum useful interaction is required?
+31. What mobile device widths, supported browsers, accessibility expectations and maximum acceptable initial dashboard density should define acceptance?
 
 ## Architecture and delivery
 
-24. Confirm .NET 10 availability/support in the target environment and whether SQL Server is operationally/licensing-approved.
-25. Which frontend framework/tooling should replace or evolve the current React/Vite prototype? Should GitHub Pages deployment be retained for non-production preview only?
-26. What API authentication/session design, CSRF/CORS policy, secret management, logging/monitoring, and audit retention are required?
-27. What are the first usable vertical slice and measurable acceptance criteria? Which import/migration sources exist, if any?
+32. Confirm .NET 10 availability/support in the target environment and whether SQL Server is operationally/licensing-approved.
+33. Which frontend framework/tooling should replace or evolve the current React/Vite prototype? Should GitHub Pages deployment be retained for non-production preview only?
+34. What API authentication/session design, CSRF/CORS policy, secret management, logging/monitoring, and audit retention are required?
+35. What are the first usable vertical slice and measurable acceptance criteria? Which import/migration sources exist, if any?

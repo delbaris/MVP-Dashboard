@@ -7,6 +7,8 @@ This blueprint sequences discovery and delivery; it is not a declaration that th
 - Confirm target .NET/runtime, SQL Server, deployment host, network restrictions, backup operations and support ownership.
 - Confirm identity source, account lifecycle, permission/data-scope model, sensitive fields and audit requirements.
 - Agree lifecycle vocabularies, timezone/currency, time approval, rate/cost rules and project-progress policy.
+- Resolve the manager-feedback questions for gross revenue, total budget/cost aggregation, executive issue triage, meeting privacy/source, role-specific landing pages, and project Gantt source/interactions.
+- Establish a mobile viewport/accessibility acceptance matrix and agree which UI-only concepts may use clearly labeled synthetic data before authoritative backend slices exist.
 - Define MVP acceptance scenarios, initial roles, data import needs and nonfunctional targets.
 
 **Exit:** recorded decisions and owners; unresolved assumptions are explicit.
@@ -47,9 +49,13 @@ Add timesheets/entries, submission/approval/correction; distinguish planned/allo
 
 ## 6. Alerts and executive decision support
 
-Implement alerts as evaluated rules over authoritative data, with severity, timestamps, ownership and drill-down. Build dashboard cards only on tested services/queries and approved KPI definitions.
+Implement alerts as evaluated rules over authoritative data, with severity, timestamps, ownership and drill-down. Build the manager-prioritized mobile dashboard only on tested services/queries and approved KPI definitions. Add executive issue follow-up and role-aware personal/manager home routes with explicit data scope. Build meeting schedule and gross-revenue reporting only after source, permission and business rules are ratified.
 
 **Exit:** every displayed decision-grade metric is reproducible and scoped; stale/missing data is visible rather than presented as a success-shaped zero.
+
+## 6a. Project schedule visualization
+
+Add an interactive Gantt/timeline above existing project-detail tabs/sections. Use approved phase/work-item/milestone start/end/status data, preserve current overview/structure/resources, and open an authorized detail panel/page when a schedule item is selected. Validate hierarchy, undated item handling, dependency display, mobile horizontal interaction, keyboard operation and equivalent non-chart navigation. Do not manufacture schedule dates from unrelated fields.
 
 ## 7. Operational hardening
 

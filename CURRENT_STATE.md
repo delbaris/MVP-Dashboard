@@ -1,6 +1,7 @@
 # Current State
 
 **Verified against repository:** 2026-09-26
+**Stakeholder feedback incorporated:** 2026-09-26; requested dashboard/report enhancements are requirements only, not yet implemented.
 **Current product maturity:** UI prototype / concept demonstrator. No production backend or authoritative business data is present.
 
 ## Technology and execution
@@ -17,6 +18,10 @@
 - Employee list/detail, recruitment list/candidate detail, project list/detail, activities, analytics, alerts, concept Copilot, settings, and not-found page.
 - Shared layout/navigation and UI elements (modal/drawer/dialog, form fields, badges, avatar, progress, toast, loading, breadcrumbs, and Jalali date picker).
 - `ProjectStructure` and project-financial presentation utilities are present. Financial values may come from hard-coded demonstration values.
+- Project detail already has overview/structure/resources and related sections; an interactive project Gantt chart above these sections is requested but not present.
+- Existing dashboard widgets are not yet organized into the manager-requested mobile-first KPI priority/order and drill-down experience.
+- Budget/hour/cost samples and financial summary presentation exist, but there is no authoritative gross-revenue ledger or detailed budget/expense report.
+- No team/management meeting schedule or meeting data module is present.
 - Persian-number and Jalali helpers are present. Existing date data in fixtures is Jalali-shaped text; it is not a canonical server-side timestamp/date policy.
 
 ## State and data behavior
@@ -38,7 +43,7 @@
 
 ## Next recommended engineering step
 
-Do not expand the demo dashboard as if it were the system of record. Validate open business decisions, ratify the Phase 1 architecture and environment, then establish backend solution structure, identity/security foundation, relational migrations, and a tested vertical slice for an employee identity/profile. Replace demo authentication/data flow only with a designed server-backed implementation; do not merely connect production records to the existing local-storage model.
+Use [MANAGEMENT_FEEDBACK_2026-09-26.md](./MANAGEMENT_FEEDBACK_2026-09-26.md) as the product brief for the next UX discussion. Confirm gross-revenue and expense definitions, executive issue triage, meeting ownership/privacy, role-specific home views, and Gantt schedule source before presenting those figures as real. A clearly labeled UI-only prototype can be built with synthetic data after scope is confirmed; do not expand the dashboard as if it were the system of record. For production operations, validate open business decisions and architecture/environment, then establish backend, identity/security, migrations, and a tested employee vertical slice.
 
 ## Evidence map
 
