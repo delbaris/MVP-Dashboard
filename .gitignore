@@ -3,3 +3,5 @@ node_modules/
 dist/
 build/
 *.log
+
+# Project memory and design documents are intentionally versioned.
