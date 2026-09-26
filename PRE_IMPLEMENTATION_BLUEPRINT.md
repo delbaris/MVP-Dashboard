@@ -8,7 +8,7 @@ This blueprint sequences discovery and delivery; it is not a declaration that th
 - Confirm identity source, account lifecycle, permission/data-scope model, sensitive fields and audit requirements.
 - Agree lifecycle vocabularies, timezone/currency, time approval, rate/cost rules and project-progress policy.
 - Resolve the manager-feedback questions for gross revenue, total budget/cost aggregation, executive issue triage, meeting privacy/source, role-specific landing pages, and project Gantt source/interactions.
-- Establish a mobile viewport/accessibility acceptance matrix and agree which UI-only concepts may use clearly labeled synthetic data before authoritative backend slices exist.
+- Establish a mobile viewport/accessibility acceptance matrix. A clearly labeled synthetic-data UI prototype is now in place; agree which of its flows should carry into production after backend and policy design.
 - Define MVP acceptance scenarios, initial roles, data import needs and nonfunctional targets.
 
 **Exit:** recorded decisions and owners; unresolved assumptions are explicit.

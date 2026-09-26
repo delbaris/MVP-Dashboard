@@ -4,6 +4,7 @@ import { useApp } from "../../context/AppContext.jsx";
 import { useAuth } from "../../context/AuthContext.jsx";
 import Avatar from "../ui/Avatar.jsx";
 import Icon from "../ui/Icon.jsx";
+import { Link } from "react-router-dom";
 
 function useClock() {
     const [now, setNow] = useState(new Date());
@@ -68,6 +69,9 @@ export default function Topbar({ onOpenMobileSidebar, onRequestLogout }) {
                                 <option value="lead">سرپرست تیم</option>
                                 <option value="employee">کارمند</option>
                             </select>
+                            <Link className="topbar-profile-menu-link" to="/profile" role="menuitem" onClick={() => setProfileOpen(false)}>
+                                مشاهده پروفایل من
+                            </Link>
                             <button className="topbar-profile-logout" type="button" onClick={() => { setProfileOpen(false); onRequestLogout(); }}>
                                 <Icon name="logout" size={16} /> خروج از سامانه
                             </button>

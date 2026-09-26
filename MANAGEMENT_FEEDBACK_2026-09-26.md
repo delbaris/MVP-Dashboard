@@ -2,7 +2,7 @@
 
 **Captured:** 2026-09-26
 **Source:** Feedback relayed by the project owner from technical lead/manager Engineer Shaghaghi.
-**Status:** Product direction and requested UX behavior; not yet implemented, and KPI/accounting/permission policies are not fully defined.
+**Status:** Product direction captured; mobile KPI, synthetic budget/cost drill-down, Gantt and demo-account profile UI are prototyped. KPI/accounting/permission policies and live data connections remain undefined and unimplemented.
 
 ## 1. Budget and expense reporting
 

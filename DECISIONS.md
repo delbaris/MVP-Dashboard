@@ -14,7 +14,7 @@ This log distinguishes confirmed product principles from recommended but unratif
 | P-006 | Important changes preserve business history and technical audit as distinct concepts. | Confirmed project principle |
 | P-007 | Prefer a modular monolith and internal/on-prem deployment over unnecessary distributed infrastructure. | Confirmed preference, subject to environment validation |
 | P-008 | Track durable project Markdown in Git; do not ignore `*.md` broadly. | Applied repository documentation policy |
-| P-009 | Manager feedback prioritizes a mobile-first executive home KPI order and requests a selectable Gantt above (not replacing) existing project-detail sections. | Confirmed UX priority; formulas, date sources, permissions and detailed interactions remain open |
+| P-009 | Manager feedback prioritizes a mobile-first executive home KPI order and requests a selectable Gantt above (not replacing) existing project-detail sections. | Confirmed UX priority; a synthetic-data UI prototype is implemented; formulas, authoritative date sources, permissions and operational behavior remain open |
 
 ## Architecture recommendation (not ratified)
 
